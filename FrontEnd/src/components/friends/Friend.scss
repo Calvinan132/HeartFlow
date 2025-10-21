@@ -1,0 +1,41 @@
+.Friends {
+  border-radius: 15px;
+  margin-top: 10px;
+  &:hover {
+    border: 1px solid gray;
+  }
+  .Container-info {
+    display: flex;
+    align-items: center;
+
+    .avt {
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+      margin: 5px;
+      padding: 10px;
+      border: 1px solid black;
+    }
+    .name {
+      font-size: larger;
+      font-weight: 500;
+    }
+  }
+
+  .act {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+    gap: 5px;
+    .add-partner {
+      padding: 5px;
+      background-color: green;
+      border-radius: 15px;
+    }
+    .unfriend {
+      padding: 5px;
+      background-color: red;
+      border-radius: 15px;
+    }
+  }
+}

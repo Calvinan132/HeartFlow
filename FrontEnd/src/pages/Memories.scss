@@ -1,0 +1,124 @@
+.Memories-container {
+  height: 100vh;
+  width: 100%;
+  background-color: #f5f5f7;
+
+  .Memories-left {
+    display: flex;
+    justify-content: end;
+  }
+  .Memories-mid {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    background-color: white;
+    border-radius: 15px;
+    overflow: auto;
+    max-height: 80vh;
+    .Memories-title {
+      display: flex;
+      padding: 15px;
+    }
+    .Memories-remind {
+      background-color: #fdf2f8;
+      border-left: 5px solid pink;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .Memories-about {
+      margin: 15px 0;
+      display: flex;
+      .Abouts {
+        border-radius: 15px;
+        padding: 5px 15px;
+        display: flex;
+        margin-right: 5px;
+        background-color: #e5e7eb;
+      }
+    }
+    .Memory-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-left: 0 !important;
+      .Memories-box {
+        width: 100%;
+        min-height: 100px;
+        border-left: 3px solid pink;
+        margin-bottom: 15px;
+        margin-left: 20px;
+        display: flex;
+        justify-content: end;
+        .Memory {
+          position: relative;
+          width: 90%;
+          margin-right: 40px;
+          border-radius: 15px;
+          border: 1px solid rgba(128, 128, 128, 0.5);
+          padding: 20px;
+          .Memory-edit {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+            cursor: pointer;
+          }
+          .Date-input {
+            padding: 5px;
+            border-radius: 5px;
+          }
+          .Title-input {
+            width: 100%;
+            margin: 15px 0;
+            padding: 5px;
+            border-radius: 5px;
+          }
+          .Content-input {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 5px;
+            border-radius: 5px;
+          }
+          .Memory-actions {
+            text-align: end;
+          }
+          .Memory-date {
+            color: #be185d;
+          }
+          .Memory-sign {
+            text-align: end;
+            font-weight: 500;
+            font-size: larger;
+          }
+          .Memory-title {
+            margin-bottom: 10px;
+          }
+          .Memory-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+          }
+        }
+      }
+    }
+  }
+  .Memories-right {
+    .content-container {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      background-color: white;
+      border-radius: 15px;
+      margin-left: 25px;
+    }
+    .Add-memory {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      background-color: white;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      margin-top: 15px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+  }
+}

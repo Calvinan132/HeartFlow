@@ -1,0 +1,54 @@
+.Popup-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  border: 1px solid #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .Popup-content {
+    height: 50%;
+    width: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    .Close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .Input-content {
+      height: 90%;
+      width: 90%;
+      display: flex;
+      //   justify-content: center;
+      align-items: start;
+      flex-direction: column;
+      gap: 15px;
+      .Date-input {
+        padding: 3px;
+      }
+      .Title-input {
+        width: 60%;
+        padding: 3px;
+      }
+      .Content-input {
+        width: 100%;
+        padding: 3px;
+      }
+      .Submit-input {
+        padding: 5px;
+      }
+    }
+  }
+}

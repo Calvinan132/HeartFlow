@@ -1,0 +1,23 @@
+.Sidebar-container {
+  list-style: none;
+
+  font-size: larger;
+  font-weight: 500;
+  .Sidebar-content {
+    width: 160px;
+    height: 50px;
+    color: #777;
+    text-decoration: none;
+    border-radius: 5px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    i {
+      padding: 0 30px;
+    }
+    &.active {
+      color: #ffc0cb;
+      border: 2px solid #ffc0cb;
+    }
+  }
+}
