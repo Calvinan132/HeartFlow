@@ -5,7 +5,7 @@ let request = async (req, res) => {
 
   const senderId = req.user.id;
   const { receiverId } = req.body;
-  console.log(receiverId);
+
   if (!receiverId || senderId == receiverId) {
     return res.status(400).json({ message: "ID người nhận không hợp lệ." });
   }
@@ -22,20 +22,20 @@ let request = async (req, res) => {
     if (existing.length > 0) {
       const status = existing[0].status;
       if (status === "ACCEPTED") {
-        return res.status(409).json({ message: "Hai bạn đã là bạn bè." });
+        return res.json({ message: "Hai bạn đã là bạn bè." });
       }
       if (status === "PENDING") {
         // Có thể là yêu cầu đã được gửi trước đó, hoặc người kia gửi cho mình
-        return res
-          .status(409)
-          .json({ message: "Yêu cầu đã được gửi hoặc đang chờ phản hồi." });
+        return res.json({
+          message: "Yêu cầu đã được gửi hoặc đang chờ phản hồi.",
+        });
       }
     }
 
     // 2. Chèn yêu cầu mới vào database với trạng thái PENDING
     await db.execute(
       `INSERT INTO friend_requests (sender_id, receiver_id, status) 
-             VALUES (?, ?, 'PENDING')`,
+              VALUES (?, ?, 'PENDING')`,
       [senderId, receiverId]
     );
 

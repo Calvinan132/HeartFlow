@@ -6,6 +6,8 @@ import connectCloudinary from "./config/cloudinary.js";
 // Router
 import userRouter from "./routes/userRoute.js";
 import friendRouter from "./routes/friendRoute.js";
+import partnerRouter from "./routes/partner.js";
+
 import { setupSocketIO } from "./config/socket.js";
 dotenv.config();
 
@@ -17,7 +19,8 @@ app.use(cors());
 connectCloudinary();
 // Router
 app.use("/api/user", userRouter);
-app.use("/api/friend/", friendRouter);
+app.use("/api/friend", friendRouter);
+app.use("/api/partner", partnerRouter);
 
 // chat
 import http from "http";

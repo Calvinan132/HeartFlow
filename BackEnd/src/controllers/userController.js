@@ -113,7 +113,7 @@ let getMemories = async (req, res) => {
     const { id } = req.user;
     console.log(id);
     let [memories] = await db.query(
-      "SELECT MemoryId, title, content, DATE_FORMAT(created_at, '%Y-%m-%d') as created_at, user_id, partner_id FROM memories WHERE user_id = ? OR partner_id = ?",
+      "SELECT MemoryId, title, content, DATE_FORMAT(created_at, '%Y-%m-%d') as created_at, user_id, partner_id FROM memories join users on user_id = id WHERE user_id = ? or partner = ?",
       [id, id]
     );
 
@@ -128,7 +128,7 @@ let updateMemory = async (req, res) => {
   try {
     const memoryId = req.params.id;
     const { title, content, image_url, created_at } = req.body;
-    const userId = req.user?.id; // nếu bạn có JWT middleware
+    const userId = req.user.id; // nếu bạn có JWT middleware
 
     if (!title && !content && !image_url && !created_at) {
       return res.status(400).json({

@@ -1,8 +1,8 @@
-.Friends {
+.Partner {
   border-radius: 15px;
   margin-top: 10px;
   &:hover {
-    border: 1px solid gray;
+    border: 1px solid pink;
   }
   .Container-info {
     display: flex;
@@ -20,15 +20,21 @@
       font-size: larger;
       font-weight: 500;
     }
+    i {
+      color: pink;
+      margin-left: 5px;
+      text-align: center;
+      animation: moveUpDown 3s ease-in-out infinite;
+    }
   }
 
   .act {
     display: flex;
     justify-content: center;
     margin: 5px;
-    gap: 5px;
+    gap: 15px;
     .add-partner {
-      padding: 5px 15px;
+      padding: 5px 10px;
       background-color: green;
       border-radius: 15px;
     }
@@ -37,5 +43,14 @@
       background-color: red;
       border-radius: 15px;
     }
+  }
+}
+@keyframes moveUpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
   }
 }

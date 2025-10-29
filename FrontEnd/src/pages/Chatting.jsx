@@ -15,6 +15,7 @@ const Dashboard = () => {
     receiverId,
     setReceiverId,
     socket,
+    friends,
   } = useContext(SocketContext);
   const [input, setInput] = useState("");
 
@@ -30,7 +31,7 @@ const Dashboard = () => {
   const getUsername = (id) => {
     if (id === userData.id) return "You";
     const user = allUsersList.find((u) => u.id === id);
-    return user ? user.username : `User ${id}`;
+    return user ? user.lastname + " " + user.firstname : `User ${id}`;
   };
 
   // Gửi tin nhắn
@@ -48,7 +49,7 @@ const Dashboard = () => {
 
     setInput("");
   };
-
+  console.log(friends[0]?.friend_id);
   return (
     <div className="Chatting-container container-fluid">
       <div className="Chatting-content row pt-3">
@@ -78,7 +79,7 @@ const Dashboard = () => {
               )
               .map((msg, idx) => (
                 <div
-                  key={idx}
+                  key={msg.message_id}
                   style={{
                     textAlign:
                       msg.sender_id === userData?.id ? "right" : "left",
@@ -105,35 +106,49 @@ const Dashboard = () => {
         </div>
         <div className="Chatting-right col-3 row ">
           <div className="Online-users col-7">
-            <p>Người đang online</p>
-            <ul>
-              {onlineUsers.map((id) => (
-                <li
-                  key={id}
-                  style={{
-                    cursor: "pointer",
-                    fontWeight: id === receiverId ? "bold" : "normal",
-                    listStyle: "none",
-                  }}
-                  onClick={() => setReceiverId(id)}
-                >
-                  {getUsername(id)}
-                </li>
-              ))}
+            <b>Bạn bè</b>
+            <ul style={{ paddingLeft: "0" }}>
+              {friends.map((item) => {
+                if (item.friend_id === userData.partner) return;
+                return (
+                  <li
+                    key={item.friend_id}
+                    style={{
+                      cursor: "pointer",
+                      fontWeight:
+                        item.friend_id === receiverId ? "bold" : "normal",
+                      listStyle: "none",
+                    }}
+                    onClick={() => setReceiverId(item.friend_id)}
+                  >
+                    <div className="info">
+                      <img src={item.image_url}></img>
+                      {getUsername(item.friend_id)}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="Partner col-7">
             <p>Người yêu của bạn</p>
-            <div
-              onClick={() => setReceiverId(userData?.partner)}
-              style={{
-                cursor: "pointer",
-                fontWeight:
-                  userData?.partner === receiverId ? "bold" : "normal",
-              }}
-            >
-              {getUsername(userData?.partner)}
-            </div>
+            {userData?.partner ? (
+              <div
+                onClick={() => setReceiverId(userData?.partner)}
+                style={{
+                  cursor: "pointer",
+                  fontWeight:
+                    userData?.partner === receiverId ? "bold" : "normal",
+                }}
+              >
+                <div className="info">
+                  <img src={allUsersList[userData?.partner]?.image_url}></img>
+                  {getUsername(userData?.partner)}
+                </div>
+              </div>
+            ) : (
+              <div>Đang ế ...</div>
+            )}
           </div>
           <div className="Partner col-7"></div>
         </div>

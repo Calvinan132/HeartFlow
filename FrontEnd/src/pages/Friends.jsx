@@ -6,12 +6,13 @@ import { AppContext } from "../context/AppContext";
 import { SocketContext } from "../context/SocketContext";
 import Friend from "../components/friends/Friend";
 import Suggest from "../components/friends/Suggest";
+import Partner from "../components/Partner";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 let Friends = () => {
   const [requestData, setRequestData] = useState([]);
   const { token, allUser, userData } = useContext(AppContext);
-  const { friends, loadFriends } = useContext(SocketContext);
+  const { friends, loadFriends, rq } = useContext(SocketContext);
 
   let loadRequest = async () => {
     try {
@@ -137,19 +138,34 @@ let Friends = () => {
         </div>
         <div className="Right-content col-3">
           <div className="List">
-            <b>Danh sách bạn bè</b>
-
-            {friends.map((item, index) => {
-              return (
-                <Friend
-                  img={item.image_url}
-                  lastname={item.lastname}
-                  firstname={item.firstname}
-                  Id={item.friend_id}
-                  key={index}
-                ></Friend>
-              );
-            })}
+            <div className="List-f">
+              <b>Lời mời tri kỷ</b>
+              {rq.map((item, index) => {
+                return (
+                  <Partner
+                    img={item.image_url}
+                    lastname={item.lastname}
+                    firstname={item.firstname}
+                    Id={item.sender_id}
+                    key={index}
+                  ></Partner>
+                );
+              })}
+            </div>
+            <div className="List-f">
+              <b>Danh sách liên hệ</b>
+              {friends.map((item, index) => {
+                return (
+                  <Friend
+                    img={item.image_url}
+                    lastname={item.lastname}
+                    firstname={item.firstname}
+                    Id={item.friend_id}
+                    key={index}
+                  ></Friend>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

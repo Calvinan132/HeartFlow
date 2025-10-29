@@ -67,11 +67,9 @@ const SocketContextProvider = (props) => {
     if (!receiverId || !userData.id) return;
     const fetchMessages = async () => {
       try {
-        console.log(`${userData.id}/${receiverId}`);
         const res = await axios.get(
           `${backendUrl}/api/user/${userData.id}/${receiverId}`
         );
-        console.log(res);
         setMessages(res.data);
       } catch (err) {
         console.error("Lỗi fetch messages:", err);
@@ -83,6 +81,28 @@ const SocketContextProvider = (props) => {
   useEffect(loadMessage, [receiverId, userData]);
 
   useEffect(loadOnlineUser, [token, userData]);
+
+  const [rq, setrq] = useState([]);
+
+  let checkRQpartner = async () => {
+    try {
+      let { data } = await axios.get(backendUrl + "/api/partner/check", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (data.success) {
+        setrq(data.data);
+      } else {
+        console.log("Lỗi dữ liệu");
+      }
+    } catch (e) {
+      console.log("Lỗi từ frontend:", e.message);
+    }
+  };
+  useEffect(() => {
+    if (token) {
+      checkRQpartner();
+    }
+  }, [token]);
 
   const value = {
     messages,
@@ -96,6 +116,8 @@ const SocketContextProvider = (props) => {
     loadFriends,
     friends,
     setFriends,
+    checkRQpartner,
+    rq,
   };
   return (
     <SocketContext.Provider value={value}>

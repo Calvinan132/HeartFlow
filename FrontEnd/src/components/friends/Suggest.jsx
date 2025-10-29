@@ -52,7 +52,6 @@ let Suggest = ({
       check();
     }
   }, [token]);
-  console.log(checkAdd);
   return (
     <div className="Suggest-container col-4">
       <div className="info">

@@ -4,6 +4,7 @@ drop table users
 drop table messages
 drop table memories
 drop table friend_requests
+drop table partner_requests
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -50,7 +51,7 @@ CREATE TABLE friend_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
-    status ENUM('PENDING', 'ACCEPTED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
+    status ENUM('PENDING', 'ACCEPTED') NOT NULL DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
@@ -62,10 +63,29 @@ CREATE TABLE friend_requests (
     UNIQUE KEY unique_request (sender_id, receiver_id)
 );
 
+CREATE TABLE partner_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    status ENUM('pending', 'accepted') NOT NULL DEFAULT 'pending',
+    love_date DATE ,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Khóa ngoại trỏ đến bảng users
+    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE,
+    
+    -- Đảm bảo một người không thể tự gửi yêu cầu cho chính mình
+    CHECK (sender_id != receiver_id),
+    
+    -- Đảm bảo người A chỉ có thể gửi 1 yêu cầu cho người B tại một thời điểm
+    UNIQUE KEY uk_partner_request (sender_id, receiver_id)
+);
+
 truncate table users
 truncate table messages
 truncate table memories
-truncate table friend_requests
+truncate table partner_requests
 -- 1. Tạm thời vô hiệu hóa kiểm tra khóa ngoại
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -79,9 +99,9 @@ TRUNCATE TABLE messages;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
-update users set partner = 2 where id = 1
-update users set partner = 1 where id = 2
+update users set partner = null where id = 1
+update users set partner = null where id = 2
 
-INSERT INTO friend_requests ( `sender_id`, `receiver_id`, `status`) VALUES ('3', '1', 'PENDING')
+INSERT INTO friend_requests ( `sender_id`, `receiver_id`, `status`) VALUES ('2', '1', 'PENDING')
 INSERT INTO memories (user_id, partner_id, title, content, image_url)
 VALUES (1, 2, 'Chuyến đi Vũng Tàu', 'Hôm nay chúng ta đi biển cùng nhau, trời đẹp quá!', 'https://example.com/beach.jpg');

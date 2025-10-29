@@ -8,7 +8,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 let Friend = ({ img, lastname, firstname, Id }) => {
   const [expand, setExpend] = useState(false);
   const { loadFriends } = useContext(SocketContext);
-  const { token } = useContext(AppContext);
+  const { token, userData } = useContext(AppContext);
   let handleUnfriend = async (Id) => {
     try {
       let payload = {
@@ -26,6 +26,23 @@ let Friend = ({ img, lastname, firstname, Id }) => {
       console.log(e);
     }
   };
+  let handleAddPartner = async (Id) => {
+    try {
+      let payload = {
+        Id,
+      };
+
+      let { data } = await axios.post(
+        backendUrl + "/api/partner/request",
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } catch (e) {
+      console.log("Lỗi từ frontend: ", e.message);
+    }
+  };
   return (
     <div
       className="Friends"
@@ -38,7 +55,16 @@ let Friend = ({ img, lastname, firstname, Id }) => {
         <div className="name">{lastname + " " + firstname}</div>
       </div>
       <div className="act" style={!expand ? { display: "none" } : {}}>
-        <div className="add-partner">Thêm tri kỷ</div>
+        <div
+          className="add-partner"
+          style={userData.partner === null ? {} : { display: "none" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddPartner(Id);
+          }}
+        >
+          Thêm tri kỷ
+        </div>
         <div
           className="unfriend"
           onClick={(e) => {
