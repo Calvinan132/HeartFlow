@@ -137,4 +137,33 @@ let response = async (req, res) => {
     }
   }
 };
-export { request, check, response };
+
+let setDate = async (req, res) => {
+  try {
+    let { id, partner } = req.user;
+    let { loveDate } = req.body;
+    await db.execute(
+      "update partner_requests set love_date = ? where sender_id = ? or sender_id = ?",
+      [loveDate, id, partner]
+    );
+    res.json({ success: true, message: "Cập nhật ngày yêu thành công." });
+  } catch (e) {
+    console.log(e);
+    res.json({ success: false, message: "Lỗi từ backend" });
+  }
+};
+
+let loadDate = async (req, res) => {
+  try {
+    let { id, partner } = req.user;
+    let [date] = await db.query(
+      "select Date_format(love_date,'%Y-%m-%d') AS love_date from partner_requests where sender_id = ? or sender_id = ? ",
+      [id, partner]
+    );
+    res.json({ success: true, date });
+  } catch (e) {
+    console.log(e);
+    res.json({ success: false, message: "Lỗi từ backend" });
+  }
+};
+export { request, check, response, setDate, loadDate };

@@ -70,7 +70,6 @@ CREATE TABLE partner_requests (
     status ENUM('pending', 'accepted') NOT NULL DEFAULT 'pending',
     love_date DATE ,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     -- Khóa ngoại trỏ đến bảng users
     FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -97,7 +96,7 @@ TRUNCATE TABLE messages;
 
 -- 3. Kích hoạt lại kiểm tra khóa ngoại
 SET FOREIGN_KEY_CHECKS = 1;
-
+	
 
 update users set partner = null where id = 1
 update users set partner = null where id = 2

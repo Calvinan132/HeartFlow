@@ -1,8 +1,14 @@
 import "./Chatting.scss";
 import Sidebar from "../components/SideBar";
-import axios from "axios";
 
-import { useEffect, useState, useContext, useRef } from "react";
+import {
+  useEffect,
+  useState,
+  useContext,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { AppContext } from "../context/AppContext";
 import { SocketContext } from "../context/SocketContext";
 
@@ -28,11 +34,30 @@ const Dashboard = () => {
   }, [messages]);
 
   const allUsersList = allUser ?? [];
-  const getUsername = (id) => {
-    if (id === userData.id) return "You";
-    const user = allUsersList.find((u) => u.id === id);
-    return user ? user.lastname + " " + user.firstname : `User ${id}`;
-  };
+  const userMap = useMemo(() => {
+    const map = new Map();
+    if (allUser) {
+      allUser.forEach((user) => {
+        map.set(user.id, user);
+      });
+    }
+    return map;
+  }, [allUser]);
+
+  // ----------------------------------------------------------------
+  // TỐI ƯU SỐ 2: Hàm getUsername giờ siêu nhanh (O(1))
+  // useCallback đảm bảo hàm này không bị tạo lại vô ích
+  // ----------------------------------------------------------------
+  const getUsername = useCallback(
+    (id) => {
+      if (id === userData?.id) return "You";
+
+      // Tra cứu trong Map (siêu nhanh) thay vì .find() (siêu chậm)
+      const user = userMap.get(id);
+      return user ? user.lastname + " " + user.firstname : `User ${id}`;
+    },
+    [userMap, userData] // Phụ thuộc vào userMap và userData
+  );
 
   // Gửi tin nhắn
   const sendMessage = async () => {
@@ -49,7 +74,14 @@ const Dashboard = () => {
 
     setInput("");
   };
-  console.log(friends[0]?.friend_id);
+
+  let checkOnline = (userId) => {
+    return onlineUsers.some((id) => id === userId);
+  };
+
+  // useEffect(() => {
+  //   checkOnline();
+  // }, [onlineUsers]);
   return (
     <div className="Chatting-container container-fluid">
       <div className="Chatting-content row pt-3">
@@ -79,7 +111,7 @@ const Dashboard = () => {
               )
               .map((msg, idx) => (
                 <div
-                  key={msg.message_id}
+                  key={msg.message_id || idx}
                   style={{
                     textAlign:
                       msg.sender_id === userData?.id ? "right" : "left",
@@ -104,53 +136,90 @@ const Dashboard = () => {
             <button onClick={sendMessage}>Send</button>
           </div>
         </div>
-        <div className="Chatting-right col-3 row ">
-          <div className="Online-users col-7">
-            <b>Bạn bè</b>
-            <ul style={{ paddingLeft: "0" }}>
-              {friends.map((item) => {
-                if (item.friend_id === userData.partner) return;
-                return (
-                  <li
-                    key={item.friend_id}
-                    style={{
-                      cursor: "pointer",
-                      fontWeight:
-                        item.friend_id === receiverId ? "bold" : "normal",
-                      listStyle: "none",
-                    }}
-                    onClick={() => setReceiverId(item.friend_id)}
-                  >
-                    <div className="info">
-                      <img src={item.image_url}></img>
-                      {getUsername(item.friend_id)}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <div className="Partner col-7">
-            <p>Người yêu của bạn</p>
+        <div className="Chatting-right col-3 ">
+          <div className="partner-info">
+            <b>Người yêu của bạn</b>
             {userData?.partner ? (
               <div
                 onClick={() => setReceiverId(userData?.partner)}
                 style={{
                   cursor: "pointer",
-                  fontWeight:
-                    userData?.partner === receiverId ? "bold" : "normal",
                 }}
               >
                 <div className="info">
                   <img src={allUsersList[userData?.partner]?.image_url}></img>
-                  {getUsername(userData?.partner)}
+                  <div className="name-status">
+                    <div
+                      className="name"
+                      style={{
+                        fontWeight:
+                          userData?.partner === receiverId ? "bold" : "normal",
+                      }}
+                    >
+                      {getUsername(userData?.partner)}
+                    </div>
+                    <div className="status">
+                      {checkOnline(userData?.partner) ? "Online" : "Offline"}
+                      <div
+                        className="dot"
+                        style={
+                          checkOnline(userData?.partner)
+                            ? { backgroundColor: "green" }
+                            : { backgroundColor: "gray" }
+                        }
+                      ></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
               <div>Đang ế ...</div>
             )}
           </div>
-          <div className="Partner col-7"></div>
+          <div className="Online-users">
+            <b>Bạn bè</b>
+            <ul style={{ paddingLeft: "0" }}>
+              {friends.map((item) => {
+                if (item.friend_id === userData.partner) return null;
+                return (
+                  <li
+                    key={item.friend_id}
+                    style={{
+                      cursor: "pointer",
+                      listStyle: "none",
+                    }}
+                    onClick={() => setReceiverId(item.friend_id)}
+                  >
+                    <div className="info">
+                      <img src={item.image_url}></img>
+                      <div className="name-status">
+                        <div
+                          className="name"
+                          style={{
+                            fontWeight:
+                              item.friend_id === receiverId ? "bold" : "normal",
+                          }}
+                        >
+                          {getUsername(item.friend_id)}
+                        </div>
+                        <div className="status">
+                          {checkOnline(item.friend_id) ? "Online" : "Offline"}
+                          <div
+                            className="dot"
+                            style={
+                              checkOnline(item.friend_id)
+                                ? { backgroundColor: "green" }
+                                : { backgroundColor: "gray" }
+                            }
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

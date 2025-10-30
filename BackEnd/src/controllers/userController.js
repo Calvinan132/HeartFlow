@@ -86,7 +86,7 @@ let loadUserData = async (req, res) => {
   try {
     const { id } = req.user;
     let profile = await db.query(
-      "select id,username,email,partner from users where id = ? ",
+      "select id,username,email,image_url,partner,lastname,firstname from users where id = ? ",
       [id]
     );
     res.json({ success: true, profile });

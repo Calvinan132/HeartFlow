@@ -1,0 +1,55 @@
+.Dashboard-counter {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 25px;
+  .user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 100px;
+      width: 100px;
+      border: 1px solid black;
+      border-radius: 50%;
+      padding: 10px;
+    }
+  }
+  .Counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    i {
+      font-size: 40px;
+      color: pink;
+
+      animation: moveUpDown 3s ease-in-out infinite;
+    }
+    .Day-counter {
+      font-size: 50px;
+      font-weight: 600;
+      color: #5d5d81;
+    }
+    span {
+      color: #777;
+    }
+  }
+  .partner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 100px;
+      width: 100px;
+      border: 1px solid black;
+      border-radius: 50%;
+      padding: 10px;
+    }
+  }
+}

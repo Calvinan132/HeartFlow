@@ -50,6 +50,15 @@ const Memories = () => {
     }
   };
 
+  let upcomingEvent = (arrEvent) => {
+    return arrEvent.find((event)=>{
+      const now = new Date();
+      const date = new Date(event.created_at)
+      if (getMonth(now) ===  getMonth(date))
+        if(getDate(now) )
+    })
+  }
+
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">
@@ -59,7 +68,7 @@ const Memories = () => {
         <div className="Memories-mid col-6 row">
           <PopupAddMemory></PopupAddMemory>
           <div className="Memories-title col-12">
-            <span>Hồ Sơ Kỷ Niệm Của Chúng Ta</span>
+            <b>Hồ Sơ Kỷ Niệm Của Chúng Ta</b>
           </div>
           <div className="Memories-remind">
             <div className="Memory">
@@ -173,8 +182,8 @@ const Memories = () => {
             </div>
           </div>
         </div>
-        <div className="Memories-right col-3 row">
-          <div className="content-container col-7">
+        <div className="Memories-right col-3">
+          <div className="content-container">
             <div
               className="Add-memory"
               onClick={() => {
