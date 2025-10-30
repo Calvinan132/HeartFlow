@@ -50,15 +50,51 @@ const Memories = () => {
     }
   };
 
-  let upcomingEvent = (arrEvent) => {
-    return arrEvent.find((event)=>{
-      const now = new Date();
-      const date = new Date(event.created_at)
-      if (getMonth(now) ===  getMonth(date))
-        if(getDate(now) )
-    })
-  }
+  let findUpcomingEvents = (arrEvent, daysInAdvance = 7) => {
+    const oneDayInMs = 1000 * 60 * 60 * 24;
 
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const currentYear = now.getFullYear();
+
+    return arrEvent.filter((event) => {
+      const date = new Date(event.created_at);
+      const targetMonth = date.getMonth(); // 0-11
+      const targetDay = date.getDate();
+
+      // Tạo mốc kỉ niệm năm nay
+      const anniversaryThisYear = new Date(currentYear, targetMonth, targetDay);
+      anniversaryThisYear.setHours(0, 0, 0, 0);
+
+      // Tạo mốc kỉ niệm năm sau (để xử lý cuối năm)
+      const anniversaryNextYear = new Date(
+        currentYear + 1,
+        targetMonth,
+        targetDay
+      );
+      anniversaryNextYear.setHours(0, 0, 0, 0);
+
+      // Tính khoảng cách (KHÔNG dùng Math.abs)
+      // (Nếu là tương lai, diff sẽ >= 0)
+      const diffThisYearMs = anniversaryThisYear.getTime() - now.getTime();
+      const diffNextYearMs = anniversaryNextYear.getTime() - now.getTime();
+
+      // Làm tròn để tránh lỗi múi giờ
+      const diffThisYearDays = Math.round(diffThisYearMs / oneDayInMs);
+      const diffNextYearDays = Math.round(diffNextYearMs / oneDayInMs);
+
+      // Kiểm tra xem kỉ niệm năm NAY có "sắp đến" không
+      const isUpcomingThisYear =
+        diffThisYearDays >= 0 && diffThisYearDays <= daysInAdvance;
+
+      // Kiểm tra xem kỉ niệm năm SAU có "sắp đến" không (trường hợp cuối năm)
+      const isUpcomingNextYear =
+        diffNextYearDays >= 0 && diffNextYearDays <= daysInAdvance;
+
+      return isUpcomingThisYear || isUpcomingNextYear;
+    });
+  };
+  console.log(findUpcomingEvents(memories));
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">
