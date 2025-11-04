@@ -53,7 +53,7 @@ let Suggest = ({
     }
   }, [token]);
   return (
-    <div className="Suggest-container col-4">
+    <div className="Suggest-container col ">
       <div className="info">
         <div className="pile">
           <img className="avt" src={img}></img>

@@ -36,7 +36,6 @@ const PopupAddMemory = () => {
       console.error("PUT error:", e.response?.data || e);
     }
   };
-  console.log(memory);
   return (
     <>
       <div

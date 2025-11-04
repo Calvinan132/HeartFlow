@@ -1,12 +1,11 @@
 import "./Shop.scss";
-import SideBar from "../components/Sidebar";
-
+import Sidebar from "../components/SideBar";
 let Shop = () => {
   return (
     <div className="Shop-container container-fluid">
       <div className="Shop-content row pt-3">
         <div className="Left-content col-3">
-          <SideBar></SideBar>
+          <Sidebar></Sidebar>
         </div>
         <div className="Mid-content col-6">
           <div className="Header"></div>

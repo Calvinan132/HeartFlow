@@ -4,14 +4,30 @@ import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 let userRegister = async (req, res) => {
   try {
-    const { username, password, email, lastname, firstname } = req.body;
+    const { username, password, confirmPassword, email, firstname, lastname } =
+      req.body;
     // const img = req.file;
+    if (
+      !username ||
+      !password ||
+      !confirmPassword ||
+      !email ||
+      !firstname ||
+      !lastname
+    )
+      return res.json({
+        succes: false,
+        message: "Không được để trống thông tin !",
+      });
+    if (password !== confirmPassword)
+      return res.json({ success: false, message: "Mật khẩu không khớp!" });
+
     const [existingUser] = await db.query(
       "select * from users where username = ? or email = ?",
       [username, email]
     );
     if (existingUser.length !== 0)
-      return res.status(400).json({ message: "Tài khoản đã tồn tại !" });
+      return res.json({ success: false, message: "Tài khoản đã tồn tại !" });
 
     // upload image to cloudinary
     // const imageUpload = await cloudinary.uploader.upload(img.path, {
@@ -28,10 +44,12 @@ let userRegister = async (req, res) => {
       [username, hashedPassword, email, lastname, firstname]
     );
     console.log(result);
-    res.status(201).json({ message: "Tạo tài khoản thành công !" });
+    res
+      .status(201)
+      .json({ success: true, message: "Tạo tài khoản thành công !" });
   } catch (e) {
     console.log("Lỗi: ", e);
-    res.status(500).json({ message: `Lỗi: ${e.message}` });
+    res.status(500).json({ success: false, message: `Lỗi: ${e.message}` });
   }
 };
 

@@ -1,11 +1,61 @@
 import Sidebar from "../components/SideBar";
 import PopupAddMemory from "../components/PopupAddMemory";
 import "./Memories.scss";
-import { useState, useEffect, useContext } from "react";
+import { useState, useMemo, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+let findClosestUpcomingEvent = (arrEvent) => {
+  if (!arrEvent || arrEvent.length === 0) {
+    return null;
+  }
+
+  const oneDayInMs = 1000 * 60 * 60 * 24;
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const currentYear = now.getFullYear();
+
+  // 1. Tính toán số ngày "sắp đến" cho MỌI sự kiện
+  const eventsWithDiff = arrEvent.map((event) => {
+    const date = new Date(event.created_at);
+    const targetMonth = date.getMonth(); // 0-11
+    const targetDay = date.getDate();
+
+    const anniversaryThisYear = new Date(currentYear, targetMonth, targetDay);
+    anniversaryThisYear.setHours(0, 0, 0, 0);
+
+    const anniversaryNextYear = new Date(
+      currentYear + 1,
+      targetMonth,
+      targetDay
+    );
+    anniversaryNextYear.setHours(0, 0, 0, 0);
+
+    const diffThisYearMs = anniversaryThisYear.getTime() - now.getTime();
+    const diffNextYearMs = anniversaryNextYear.getTime() - now.getTime();
+
+    const diffThisYearDays = Math.round(diffThisYearMs / oneDayInMs);
+    const diffNextYearDays = Math.round(diffNextYearMs / oneDayInMs);
+
+    // 2. Chọn mốc kỉ niệm "sắp đến" (luôn là số >= 0)
+    // Nếu kỉ niệm năm nay đã qua (số âm), thì dùng kỉ niệm năm sau.
+    const upcomingDiff =
+      diffThisYearDays >= 0 ? diffThisYearDays : diffNextYearDays;
+
+    return {
+      event: event,
+      upcomingDiff: upcomingDiff,
+    };
+  });
+
+  // 3. Sắp xếp mảng để tìm ra sự kiện có số ngày "sắp đến" nhỏ nhất
+  eventsWithDiff.sort((a, b) => a.upcomingDiff - b.upcomingDiff);
+
+  // 4. Trả về sự kiện đầu tiên (gần nhất)
+  return eventsWithDiff[0].event;
+};
 
 const Memories = () => {
   const { token, userData, allUser, isShowPopup, setShowPopup } =
@@ -44,57 +94,12 @@ const Memories = () => {
       });
       setEditingId(null);
       loadMemories();
-      console.log(editData.created_at);
     } catch (e) {
       console.error("PUT error:", e.response?.data || e);
     }
   };
 
-  let findUpcomingEvents = (arrEvent, daysInAdvance = 7) => {
-    const oneDayInMs = 1000 * 60 * 60 * 24;
-
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const currentYear = now.getFullYear();
-
-    return arrEvent.filter((event) => {
-      const date = new Date(event.created_at);
-      const targetMonth = date.getMonth(); // 0-11
-      const targetDay = date.getDate();
-
-      // Tạo mốc kỉ niệm năm nay
-      const anniversaryThisYear = new Date(currentYear, targetMonth, targetDay);
-      anniversaryThisYear.setHours(0, 0, 0, 0);
-
-      // Tạo mốc kỉ niệm năm sau (để xử lý cuối năm)
-      const anniversaryNextYear = new Date(
-        currentYear + 1,
-        targetMonth,
-        targetDay
-      );
-      anniversaryNextYear.setHours(0, 0, 0, 0);
-
-      // Tính khoảng cách (KHÔNG dùng Math.abs)
-      // (Nếu là tương lai, diff sẽ >= 0)
-      const diffThisYearMs = anniversaryThisYear.getTime() - now.getTime();
-      const diffNextYearMs = anniversaryNextYear.getTime() - now.getTime();
-
-      // Làm tròn để tránh lỗi múi giờ
-      const diffThisYearDays = Math.round(diffThisYearMs / oneDayInMs);
-      const diffNextYearDays = Math.round(diffNextYearMs / oneDayInMs);
-
-      // Kiểm tra xem kỉ niệm năm NAY có "sắp đến" không
-      const isUpcomingThisYear =
-        diffThisYearDays >= 0 && diffThisYearDays <= daysInAdvance;
-
-      // Kiểm tra xem kỉ niệm năm SAU có "sắp đến" không (trường hợp cuối năm)
-      const isUpcomingNextYear =
-        diffNextYearDays >= 0 && diffNextYearDays <= daysInAdvance;
-
-      return isUpcomingThisYear || isUpcomingNextYear;
-    });
-  };
-  console.log(findUpcomingEvents(memories));
+  const event = findClosestUpcomingEvent(memories);
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">
@@ -104,18 +109,19 @@ const Memories = () => {
         <div className="Memories-mid col-6 row">
           <PopupAddMemory></PopupAddMemory>
           <div className="Memories-title col-12">
-            <b>Hồ Sơ Kỷ Niệm Của Chúng Ta</b>
+            <b>Hồ Sơ Kỷ Niệm</b>
           </div>
           <div className="Memories-remind">
             <div className="Memory">
-              <div className="Memory-date">1/1/1</div>
+              <div className="Memory-date">{ddmmyy(event.created_at)}</div>
               <div className="Memory-title">
-                <b>title</b>
+                <b>{event.title}</b>
               </div>
-              <div className="Memory-content">hello</div>
-              <div className="Memory-sign">An</div>
+              <div className="Memory-content">{event.content}</div>
+              <div className="Memory-sign">{getUsername(event.user_id)}</div>
               <div className="Memory-edit"></div>
             </div>
+            <div className="Remaining">Còn 1 ngày</div>
           </div>
           <div className="Memory-container col-12">
             <div className="Memories-box row gap-3">

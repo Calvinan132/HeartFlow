@@ -1,28 +1,28 @@
-.login-bgr {
+.register-bgr {
   height: 100vh;
   background-image: url(../assets/bgr.jpg);
   background-size: cover;
   background-position: 50% 40%;
   background-repeat: no-repeat;
 
-  .login-container {
+  .register-container {
     background-color: rgba(255, 255, 255, 0.6);
     border: 2px solid black;
     border-radius: 15px;
     margin: auto;
     width: 350px;
     height: 500px;
-    padding: 40px 0;
+    // padding: 40px 0;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
 
-    .login-content {
+    .register-content {
       margin: 10px;
 
-      .text-login {
+      .text-register {
         text-align: center;
         font-weight: 600;
         font-size: 24px;
@@ -39,6 +39,13 @@
           cursor: pointer;
         }
       }
+      .click {
+        margin-left: 3px;
+        cursor: pointer;
+        &:hover {
+          font-weight: 500;
+        }
+      }
 
       .btn-input {
         margin: 15px 0;
@@ -49,33 +56,6 @@
         background-color: white;
         font-size: 15px;
         font-weight: 600;
-      }
-      .other-login {
-        font-size: 16px;
-        font-weight: 500;
-        color: gray;
-      }
-      .click {
-        margin-left: 3px;
-        cursor: pointer;
-        &:hover {
-          font-weight: 500;
-        }
-      }
-      .app-login {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .gg {
-          font-size: 50px;
-          padding: 8px;
-          margin: 12px;
-        }
-        .fb {
-          font-size: 50px;
-          padding: 7px 16px;
-          margin: 12px;
-        }
       }
     }
   }

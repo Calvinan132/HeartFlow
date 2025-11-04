@@ -88,7 +88,9 @@ const Login = () => {
             </button>
           </div>
           <div className="col-12 text-right">
-            <span>Forgot your password ?</span>
+            <span className="click" onClick={() => navigate("/register")}>
+              Create an account?
+            </span>
           </div>
           <div className="col-12 text-center">
             <span className="other-login">Or login with:</span>

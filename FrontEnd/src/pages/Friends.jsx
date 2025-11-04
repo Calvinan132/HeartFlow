@@ -119,7 +119,7 @@ let Friends = () => {
           </div>
           <div className="Suggest">
             <p className="title">Gợi ý kết bạn</p>
-            <div className="display-info gap-2">
+            <div className="display-info row row-cols-1 row-cols-md-3 g-3">
               {allUser.map((item, index) => {
                 if (item.id === userData.id) return;
                 if (friends.some((user) => user.friend_id === item.id)) return;

@@ -7,20 +7,27 @@ import Chatting from "./pages/Chatting";
 import Memories from "./pages/Memories";
 import Shop from "./pages/Shop.";
 import Friends from "./pages/Friends";
+import Register from "./pages/Register";
+import Pet from "./pages/Pet";
+import Location from "./pages/Location";
 import "./App.css";
 function App() {
   let location = useLocation();
-  let hidenNavbar = location.pathname === "/login";
+  let hidenNavbar1 = location.pathname === "/login";
+  let hidenNavbar2 = location.pathname === "/register";
   return (
     <div>
-      {!hidenNavbar && <Navbar />}
+      {!hidenNavbar1 && !hidenNavbar2 && <Navbar />}
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<Chatting />} />
         <Route path="/Memories" element={<Memories />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/addfriends" element={<Friends />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/pet" element={<Pet />} />
+        <Route path="/Location" element={<Location />} />
       </Routes>
     </div>
   );
