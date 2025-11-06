@@ -99,7 +99,36 @@ const Memories = () => {
     }
   };
 
+  function tinhSoNgayDenHangNam(input) {
+    const date = new Date(input);
+    const ngay = date?.getDate();
+    const thang = date?.getMonth() + 1;
+    const MS_MOT_NGAY = 1000 * 60 * 60 * 24;
+    const homNay = new Date();
+
+    // 1. Chuẩn hóa 'hôm nay' về 00:00:00 UTC
+    const namHienTai = homNay.getFullYear();
+    const utcHomNay = Date.UTC(namHienTai, homNay.getMonth(), homNay.getDate());
+
+    // 2. Tạo ngày đích cho NĂM NAY
+    //    Lưu ý: Tháng trong JavaScript bắt đầu từ 0 (tháng 0 = tháng 1)
+    //    nên chúng ta phải (thang - 1)
+    let utcNgayDich = Date.UTC(namHienTai, thang - 1, ngay);
+
+    // 3. KIỂM TRA QUAN TRỌNG:
+    //    Nếu ngày đích của năm nay đã trôi qua (utcNgayDich < utcHomNay),
+    //    thì chúng ta phải tính cho ngày đó của NĂM SAU.
+    if (utcNgayDich < utcHomNay) {
+      utcNgayDich = Date.UTC(namHienTai + 1, thang - 1, ngay);
+    }
+
+    // 4. Tính chênh lệch
+    return Math.floor((utcNgayDich - utcHomNay) / MS_MOT_NGAY);
+  }
+
   const event = findClosestUpcomingEvent(memories);
+
+  console.log(tinhSoNgayDenHangNam(event?.created_at));
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">
@@ -113,15 +142,17 @@ const Memories = () => {
           </div>
           <div className="Memories-remind">
             <div className="Memory">
-              <div className="Memory-date">{ddmmyy(event.created_at)}</div>
+              <div className="Memory-date">{ddmmyy(event?.created_at)}</div>
               <div className="Memory-title">
-                <b>{event.title}</b>
+                <b>{event?.title}</b>
               </div>
-              <div className="Memory-content">{event.content}</div>
-              <div className="Memory-sign">{getUsername(event.user_id)}</div>
+              <div className="Memory-content">{event?.content}</div>
+              <div className="Memory-sign">{getUsername(event?.user_id)}</div>
               <div className="Memory-edit"></div>
             </div>
-            <div className="Remaining">Còn 1 ngày</div>
+            <div className="Remaining">
+              Còn {tinhSoNgayDenHangNam(event?.created_at)} ngày
+            </div>
           </div>
           <div className="Memory-container col-12">
             <div className="Memories-box row gap-3">

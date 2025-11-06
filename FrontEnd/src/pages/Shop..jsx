@@ -1,5 +1,6 @@
 import "./Shop.scss";
 import Sidebar from "../components/SideBar";
+import Card from "../components/Shop/Card";
 let Shop = () => {
   return (
     <div className="Shop-container container-fluid">
@@ -15,39 +16,9 @@ let Shop = () => {
           <div className="Title">
             <b>Sản phẩm nổi bật</b>
           </div>
-          <div className="Products">
-            <div className="Product">
-              <div className="Picture"></div>
-              <div className="Name">Iphone 18 Pro Max</div>
-              <div className="Rate">
-                <b>
-                  5.0<i className="fa-solid fa-star"></i>
-                </b>
-                | Đã bán 1000+
-              </div>
-              <div className="Price">50.000.000</div>
-            </div>
-            <div className="Product">
-              <div className="Picture"></div>
-              <div className="Name">Iphone 18 Pro Max</div>
-              <div className="Rate">
-                <b>
-                  5.0<i className="fa-solid fa-star"></i>
-                </b>
-                | Đã bán 1000+
-              </div>
-              <div className="Price">50.000.000</div>
-            </div>
-            <div className="Product">
-              <div className="Picture"></div>
-              <div className="Name">Iphone 18 Pro Max</div>
-              <div className="Rate">
-                <b>
-                  5.0<i className="fa-solid fa-star"></i>
-                </b>
-                | Đã bán 1000+
-              </div>
-              <div className="Price">50.000.000</div>
+          <div className="container py-4">
+            <div className="Products row  g-3 ">
+              <Card></Card>
             </div>
           </div>
         </div>

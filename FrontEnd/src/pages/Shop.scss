@@ -7,6 +7,8 @@
       justify-content: end;
     }
     .Mid-content {
+      overflow: auto;
+      max-height: 90vh;
       .Header {
         min-height: 200px;
         border: 1px solid red;
@@ -22,23 +24,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .Product {
-          height: 250px;
-          width: 30%;
-          border: 1px solid green;
-          padding: 10px;
-          .Picture {
-            height: 70%;
-            background-color: black;
-          }
-          .Name {
-          }
-          .Rate {
-            b {
-              color: rgb(255, 221, 0);
-            }
-          }
-        }
       }
     }
     .Right-content {

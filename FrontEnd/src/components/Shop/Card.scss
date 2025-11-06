@@ -1,0 +1,21 @@
+.Product {
+  height: 350px;
+  border: 1px solid green;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .Picture {
+    height: 60%;
+    width: 90%;
+    background-color: black;
+  }
+  .Name {
+  }
+  .Rate {
+    b {
+      color: rgb(255, 221, 0);
+    }
+  }
+}

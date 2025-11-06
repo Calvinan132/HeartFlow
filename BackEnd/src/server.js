@@ -6,7 +6,8 @@ import connectCloudinary from "./config/cloudinary.js";
 // Router
 import userRouter from "./routes/userRoute.js";
 import friendRouter from "./routes/friendRoute.js";
-import partnerRouter from "./routes/partner.js";
+import partnerRouter from "./routes/partnerRouter.js";
+import shopRouter from "./routes/shopRouter.js";
 
 import { setupSocketIO } from "./config/socket.js";
 dotenv.config();
@@ -21,7 +22,7 @@ connectCloudinary();
 app.use("/api/user", userRouter);
 app.use("/api/friend", friendRouter);
 app.use("/api/partner", partnerRouter);
-
+app.use("/api/shop", shopRouter);
 // chat
 import http from "http";
 import { Server } from "socket.io";

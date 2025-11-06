@@ -13,6 +13,8 @@ CREATE TABLE users (
     image_url VARCHAR(255),
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
+    address TEXT,
+    phone_number VARCHAR(10),
     partner INT DEFAULT NULL,
     role VARCHAR(10) DEFAULT 'user',
     FOREIGN KEY (partner) REFERENCES users(id)
