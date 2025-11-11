@@ -1,6 +1,6 @@
 import { CounterContext } from "../../context/CounterContext";
 import { AppContext } from "../../context/AppContext";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import "./Counter.scss";
 
@@ -11,9 +11,24 @@ const Counter = () => {
   const [tmpDate, settmp] = useState("");
   const { loveDate, setLoveDate } = useContext(CounterContext);
 
+  const [isMdOrLarger, setIsMdOrLarger] = useState(window.innerWidth >= 768);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMdOrLarger(window.innerWidth >= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const [isShow, setShow] = useState(false);
   let togglePopup = () => {
-    setShow(!isShow);
+    if (!isMdOrLarger) {
+      setShow(!isShow);
+    } else {
+      console.log("Onclick bị vô hiệu hóa vì màn hình nhỏ hơn MD.");
+    }
   };
 
   const partner = allUser.find((user) => user.id === userData.partner);
