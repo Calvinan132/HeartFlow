@@ -1,18 +1,17 @@
 .Memories-container {
-  height: 100vh;
+  height: 92vh;
   width: 100%;
   background-color: #f5f5f7;
-
   .Memories-left {
     display: flex;
     justify-content: end;
   }
   .Memories-mid {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    background-color: white;
+    // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    // background-color: white;
     border-radius: 15px;
     overflow: auto;
-    max-height: 80vh;
+    max-height: 85vh;
     .Memories-title {
       display: flex;
       padding: 15px;
@@ -55,11 +54,13 @@
         width: 100%;
         min-height: 100px;
         border-left: 3px solid pink;
+        padding: 15px;
         margin-bottom: 15px;
         margin-left: 20px;
         display: flex;
         justify-content: end;
         .Memory {
+          background-color: white;
           position: relative;
           width: 90%;
           margin-right: 40px;
@@ -117,7 +118,6 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
       background-color: white;
       border-radius: 15px;
-      margin-left: 25px;
     }
     .Add-memory {
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);

@@ -75,10 +75,10 @@ let Friends = () => {
   return (
     <div className="AddFriends-container container-fluid">
       <div className="AddFriends-content row pt-3">
-        <div className="Left-content col-3">
+        <div className="Left-content d-none d-md-flex col-md-3">
           <Sidebar></Sidebar>
         </div>
-        <div className="Mid-content col-6">
+        <div className="Mid-content col-12 col-md-6">
           <div className="Search">
             <i className="fa-solid fa-magnifying-glass"></i>
           </div>
@@ -119,24 +119,27 @@ let Friends = () => {
           </div>
           <div className="Suggest">
             <p className="title">Gợi ý kết bạn</p>
-            <div className="display-info row row-cols-1 row-cols-md-3 g-3">
-              {allUser.map((item, index) => {
-                if (item.id === userData.id) return;
-                if (friends.some((user) => user.friend_id === item.id)) return;
-                return (
-                  <Suggest
-                    receiverId={item.id}
-                    img={item.image_url}
-                    lastname={item.lastname}
-                    firstname={item.firstname}
-                    key={index}
-                  ></Suggest>
-                );
-              })}
+            <div className="display-info ">
+              <div className="row row-cols-1 row-cols-md-3 g-3">
+                {allUser.map((item, index) => {
+                  if (item.id === userData.id) return;
+                  if (friends.some((user) => user.friend_id === item.id))
+                    return;
+                  return (
+                    <Suggest
+                      receiverId={item.id}
+                      img={item.image_url}
+                      lastname={item.lastname}
+                      firstname={item.firstname}
+                      key={index}
+                    ></Suggest>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
-        <div className="Right-content col-3">
+        <div className="Right-content d-none d-md-flex col-md-3">
           <div className="List">
             <div className="List-f">
               <b>Lời mời tri kỷ</b>

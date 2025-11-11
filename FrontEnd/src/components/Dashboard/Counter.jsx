@@ -1,14 +1,46 @@
-import { useContext } from "react";
 import { CounterContext } from "../../context/CounterContext";
 import { AppContext } from "../../context/AppContext";
+import { useState, useContext } from "react";
+import axios from "axios";
 import "./Counter.scss";
 
 const Counter = () => {
+  const { token, backendUrl } = useContext(AppContext);
   const { totalDate } = useContext(CounterContext);
   const { userData, allUser } = useContext(AppContext);
+  const [tmpDate, settmp] = useState("");
+  const { loveDate, setLoveDate } = useContext(CounterContext);
+
+  const [isShow, setShow] = useState(false);
+  let togglePopup = () => {
+    setShow(!isShow);
+  };
 
   const partner = allUser.find((user) => user.id === userData.partner);
-  // console.log(partner);
+
+  let handleSetDate = (e) => {
+    settmp(e.target.value);
+  };
+  let handleSubmit = async () => {
+    try {
+      if (!tmpDate) {
+        return;
+      }
+      const payload = {
+        loveDate: tmpDate,
+      };
+      let { data } = await axios.put(
+        backendUrl + "/api/partner/setdate",
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setLoveDate(tmpDate);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className="Dashboard-counter col-12">
       <div className="user">
@@ -16,12 +48,38 @@ const Counter = () => {
         <b className="name">{userData.lastname + " " + userData.firstname}</b>
       </div>
       <div className="Counter">
-        <i className="fa-solid fa-heart"></i>
-        <div className="Day-counter">
+        <div className="Heart">
+          <i className="fa-solid fa-heart"></i>
+        </div>
+        <div className="Day-counter" onClick={togglePopup}>
           {!totalDate ? "00" : totalDate < 10 ? "0" + totalDate : totalDate}
         </div>
         <span>Days Together</span>
-        <span>200 days milestone in 10 days</span>
+        <div id="collapsePopup" style={isShow ? {} : { display: "none" }}>
+          <div className="Date">
+            <div className="Cancel" onClick={togglePopup}>
+              <i className="fa-solid fa-xmark"></i>
+            </div>
+            <div className="Date-container">
+              <b>Love days</b>
+              <div className="Date-input">
+                <input
+                  type="date"
+                  className="form-control"
+                  value={tmpDate ? tmpDate : loveDate}
+                  onChange={handleSetDate}
+                ></input>
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
+                  onClick={handleSubmit}
+                >
+                  submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {partner ? (
         <div className="partner">

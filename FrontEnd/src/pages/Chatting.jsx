@@ -85,11 +85,11 @@ const Dashboard = () => {
   return (
     <div className="Chatting-container container-fluid">
       <div className="Chatting-content row pt-3">
-        <div className="Chatting-left col-3 ">
+        <div className="Chatting-left d-none d-md-flex col-md-3 ">
           <Sidebar />
         </div>
-        <div className="Chatting-mid col-6 row">
-          <div className="message-top col-12">
+        <div className="Chatting-mid col-12 col-md-6">
+          <div className="message-top">
             <div>
               Chat with{" "}
               {receiverId === userData?.id ? "Myseft" : getUsername(receiverId)}
@@ -136,7 +136,7 @@ const Dashboard = () => {
             <button onClick={sendMessage}>Send</button>
           </div>
         </div>
-        <div className="Chatting-right col-3 ">
+        <div className="Chatting-right d-none d-md-flex col-md-3 ">
           <div className="partner-info">
             <b>Người yêu của bạn</b>
             {userData?.partner ? (

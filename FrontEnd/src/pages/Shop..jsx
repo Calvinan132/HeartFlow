@@ -5,10 +5,10 @@ let Shop = () => {
   return (
     <div className="Shop-container container-fluid">
       <div className="Shop-content row pt-3">
-        <div className="Left-content col-3">
+        <div className="Left-content d-none d-md-flex col-md-3">
           <Sidebar></Sidebar>
         </div>
-        <div className="Mid-content col-6">
+        <div className="Mid-content col-12 col-md-6">
           <div className="Header"></div>
           <div className="Search">
             <i className="fa-solid fa-magnifying-glass"></i>
@@ -22,7 +22,7 @@ let Shop = () => {
             </div>
           </div>
         </div>
-        <div className="Right-content col-3">
+        <div className="Right-content d-none d-md-flex col-md-3">
           <div className="Cart">
             <div className="Title">
               <i className="fa-solid fa-cart-shopping"></i>

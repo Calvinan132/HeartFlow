@@ -1,5 +1,5 @@
 .Dashboard-container {
-  height: 100vh;
+  height: 92vh;
   width: 100%;
   background-color: #f5f5f7;
   .Dashboard-left {
@@ -59,7 +59,6 @@
   .Dashboard-right {
     display: flex;
     justify-content: start;
-    margin-left: 15px;
     display: flex;
     flex-direction: column;
     .Date {

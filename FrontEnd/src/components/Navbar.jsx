@@ -14,7 +14,7 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
-    <div className="Navbar-container">
+    <div className="Navbar-container container-xl ">
       <div
         onClick={() => navigate("/")}
         style={{ cursor: "pointer" }}

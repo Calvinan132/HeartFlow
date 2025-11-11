@@ -132,10 +132,10 @@ const Memories = () => {
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">
-        <div className="Memories-left col-3">
+        <div className="Memories-left d-none d-md-flex col-md-3">
           <Sidebar />
         </div>
-        <div className="Memories-mid col-6 row">
+        <div className="Memories-mid col-12 col-md-6 ">
           <PopupAddMemory></PopupAddMemory>
           <div className="Memories-title col-12">
             <b>Hồ Sơ Kỷ Niệm</b>
@@ -155,7 +155,7 @@ const Memories = () => {
             </div>
           </div>
           <div className="Memory-container col-12">
-            <div className="Memories-box row gap-3">
+            <div className="Memories-box row gap-3 p-md-0 ">
               <div className="x">Dòng thời gian</div>
               {memories?.map((item) => {
                 const isEditing = editingId === item.MemoryId;
@@ -255,7 +255,7 @@ const Memories = () => {
             </div>
           </div>
         </div>
-        <div className="Memories-right col-3">
+        <div className="Memories-right d-none d-md-flex col-md-3">
           <div className="content-container">
             <div
               className="Add-memory"
