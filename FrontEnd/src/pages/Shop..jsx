@@ -17,7 +17,7 @@ let Shop = () => {
             <b>Sản phẩm nổi bật</b>
           </div>
           <div className="container py-4">
-            <div className="Products row  g-3 ">
+            <div className="Products row g-3 ">
               <Card></Card>
             </div>
           </div>

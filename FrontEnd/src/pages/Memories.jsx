@@ -128,7 +128,6 @@ const Memories = () => {
 
   const event = findClosestUpcomingEvent(memories);
 
-  console.log(tinhSoNgayDenHangNam(event?.created_at));
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">

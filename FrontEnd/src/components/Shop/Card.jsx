@@ -35,15 +35,13 @@ let Card = () => {
     fetchProducts();
   }, []);
 
-  console.log(products);
-
   return (
     <>
       {products.map((item) => {
         return (
           // 1. Sửa key: Dùng item.id (hoặc id duy nhất) thay vì index
-          <div className="col-12 col-md-6 col-lg-4">
-            <div className="Product" key={item.id}>
+          <div className="col-6 col-lg-4" key={item.id}>
+            <div className="Product">
               <img className="Picture" src={item.image_url} alt={item.name} />
               <div className="Name">{item.name}</div>
               <div className="Rate">

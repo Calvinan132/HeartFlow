@@ -86,4 +86,69 @@
       cursor: pointer;
     }
   }
+
+  .Popup-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    .info {
+      display: flex;
+      padding: 25px;
+      border-bottom: 2px solid #ddd;
+      .avt {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        background-color: white;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid black;
+      }
+      .name {
+        font-size: 20px;
+        font-weight: 600;
+        margin-left: 10px;
+        align-self: center;
+      }
+    }
+    .Popup-sidebar-content {
+      width: 250px;
+      height: 100%;
+      background-color: white;
+      float: right;
+      position: relative;
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px;
+      }
+      .Sidebar-Container {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        .Sidebar-Content {
+          text-decoration: none;
+          color: #333;
+          font-size: 18px;
+          padding: 10px 0;
+          display: flex;
+          align-items: center;
+          i {
+            margin-right: 10px;
+          }
+          &:hover {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding-left: 10px;
+            transition: all 0.3s ease;
+          }
+        }
+      }
+    }
+  }
 }

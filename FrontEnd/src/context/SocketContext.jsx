@@ -69,21 +69,6 @@ const SocketContextProvider = (props) => {
 
     sock.on("update_online_users", (users) => {
       setOnlineUsers(users);
-
-      // Cập nhật logic: Ưu tiên set receiverId là partner nếu họ online
-      setReceiverId((currentReceiver) => {
-        // Nếu đã có người chat, giữ nguyên
-        if (currentReceiver) return currentReceiver;
-
-        // Nếu partner có trong danh sách online, chọn partner
-        if (userData.partner && users.includes(userData.partner)) {
-          return userData.partner;
-        }
-
-        // Nếu không, chọn người đầu tiên không phải là mình
-        const firstUser = users.find((id) => id !== userData?.id);
-        return firstUser || null;
-      });
     });
 
     setSocket(sock);
