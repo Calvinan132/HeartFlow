@@ -31,7 +31,7 @@ const server = http.createServer(app);
 
 // Tạo Socket.IO server
 const io = new Server(server, {
-  cors: { origin: "http://localhost:5173" },
+  cors: { origin: process.env.VITE_URL },
 });
 
 setupSocketIO(io);
