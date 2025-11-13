@@ -10,6 +10,7 @@ import Friends from "./pages/Friends";
 import Register from "./pages/Register";
 import Pet from "./pages/Pet";
 import Location from "./pages/Location";
+
 import "./App.css";
 function App() {
   let location = useLocation();
