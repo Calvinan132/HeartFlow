@@ -16,7 +16,16 @@ let app = express();
 let port = process.env.PORT || 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+const allowedOrigin = process.env.VITE_URL; // Lấy từ .env
+
+app.use(
+  cors({
+    origin: allowedOrigin,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Nếu bạn dùng cookie/session
+  })
+);
+
 connectCloudinary();
 // Router
 app.use("/api/user", userRouter);
