@@ -90,7 +90,9 @@ const Navbar = () => {
           ></i>
           <div className="info">
             <img className="avt" src={userData?.image_url}></img>
-            <div className="name">Hoài An</div>
+            <div className="name">
+              {userData?.lastname + " " + userData?.firstname}
+            </div>
           </div>
           <div className="Sidebar-Container">
             <NavLink to="/" className="Sidebar-Content">
