@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Navbar from "./components/navBar";
+import Navbar from "./components/NavBar";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Chatting from "./pages/Chatting";
