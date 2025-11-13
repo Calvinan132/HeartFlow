@@ -1,4 +1,4 @@
-import Sidebar from "../components/SideBar";
+import Sidebar from "../components/Sidebar";
 import "./Location.scss";
 let Location = () => {
   return (

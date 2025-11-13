@@ -1,6 +1,5 @@
 import "./Chatting.scss";
 import Sidebar from "../components/Sidebar";
-
 import {
   useEffect,
   useState,

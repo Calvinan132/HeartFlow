@@ -1,4 +1,4 @@
-import Sidebar from "../components/SideBar";
+import Sidebar from "../components/Sidebar";
 import PopupAddMemory from "../components/PopupAddMemory";
 import "./Memories.scss";
 import { useState, useMemo, useContext } from "react";

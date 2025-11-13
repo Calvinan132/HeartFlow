@@ -1,5 +1,5 @@
 import "./Dashboard.scss";
-import Sidebar from "../components/SideBar";
+import Sidebar from "../components/Sidebar";
 import Counter from "../components/Dashboard/Counter";
 import { useState, useContext } from "react";
 import { CounterContext } from "../context/CounterContext";

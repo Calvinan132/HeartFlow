@@ -1,4 +1,4 @@
-import Sidebar from "../components/SideBar";
+import Sidebar from "../components/Sidebar";
 import "./friends.scss";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";

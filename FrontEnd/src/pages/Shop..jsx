@@ -1,5 +1,5 @@
 import "./Shop.scss";
-import Sidebar from "../components/SideBar";
+import Sidebar from "../components/Sidebar";
 import Card from "../components/Shop/Card";
 let Shop = () => {
   return (
