@@ -115,6 +115,17 @@
         align-self: center;
       }
     }
+    .Login {
+      height: 10%;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      font-size: larger;
+      font-weight: bold;
+      border-bottom: 2px solid #ddd;
+      cursor: pointer;
+    }
     .Popup-sidebar-content {
       width: 250px;
       height: 100%;
@@ -148,6 +159,24 @@
             transition: all 0.3s ease;
           }
         }
+      }
+    }
+
+    .Logout {
+      height: 10%;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      font-size: larger;
+      font-weight: bold;
+      border-bottom: 2px solid #ddd;
+      border-top: 2px solid #ddd;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      i {
+        margin-left: 10px;
       }
     }
   }

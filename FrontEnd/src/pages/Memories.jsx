@@ -150,7 +150,7 @@ const Memories = () => {
               <div className="Memory-edit"></div>
             </div>
             <div className="Remaining">
-              Còn {tinhSoNgayDenHangNam(event?.created_at)} ngày
+              Còn {event ? tinhSoNgayDenHangNam(event?.created_at) : "00"} ngày
             </div>
           </div>
           <div className="Memory-container col-12">

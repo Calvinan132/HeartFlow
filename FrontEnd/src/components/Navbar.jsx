@@ -1,14 +1,15 @@
 import "./Navbar.scss";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, loadUserData, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { token, setToken, userData } = useContext(AppContext);
+  const { token, setToken, userData, setUserData } = useContext(AppContext);
   const navigate = useNavigate();
   const logout = () => {
     setToken(false);
     localStorage.removeItem("token");
+    setUserData(false);
   };
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -88,12 +89,18 @@ const Navbar = () => {
               setShowSidebar(!showSidebar);
             }}
           ></i>
-          <div className="info">
-            <img className="avt" src={userData?.image_url}></img>
-            <div className="name">
-              {userData?.lastname + " " + userData?.firstname}
+          {!userData ? (
+            <div className="Login">
+              <div onClick={() => navigate("/login")}>Đăng nhập</div>
             </div>
-          </div>
+          ) : (
+            <div className="info">
+              <img className="avt" src={userData?.image_url}></img>
+              <div className="name">
+                {userData?.lastname + " " + userData?.firstname}
+              </div>
+            </div>
+          )}
           <div className="Sidebar-Container">
             <NavLink to="/" className="Sidebar-Content">
               <i className="fa-solid fa-house"></i>Home
@@ -117,6 +124,12 @@ const Navbar = () => {
               <i className="fa-solid fa-user-plus"></i>Friends
             </NavLink>
           </div>
+          {userData ? (
+            <div className="Logout" onClick={logout}>
+              <b>Đăng xuất</b>
+              <i className="fa-solid fa-arrow-right-to-bracket"></i>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

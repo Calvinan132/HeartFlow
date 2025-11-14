@@ -25,7 +25,6 @@ app.use(
     credentials: true, // Nếu bạn dùng cookie/session
   })
 );
-
 connectCloudinary();
 // Router
 app.use("/api/user", userRouter);

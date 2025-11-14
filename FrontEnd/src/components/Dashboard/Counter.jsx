@@ -58,10 +58,17 @@ const Counter = () => {
   };
   return (
     <div className="Dashboard-counter col-12">
-      <div className="user">
-        <img src={userData.image_url}></img>
-        <b className="name">{userData.lastname + " " + userData.firstname}</b>
-      </div>
+      {userData ? (
+        <div className="user">
+          <img src={userData.image_url}></img>
+          <b className="name">{userData.lastname + " " + userData.firstname}</b>
+        </div>
+      ) : (
+        <div className="user">
+          <img src="https://res.cloudinary.com/dy6glwq3r/image/upload/v1759488628/yhphnu4lksehsqhjjb9j.png"></img>
+          <b className="name">Chưa có</b>
+        </div>
+      )}
       <div className="Counter">
         <div className="Heart">
           <i className="fa-solid fa-heart"></i>
