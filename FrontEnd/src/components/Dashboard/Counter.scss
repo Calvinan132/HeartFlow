@@ -1,22 +1,20 @@
 .Dashboard-counter {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 15px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 25px;
-  .user {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    img {
-      height: 100px;
-      width: 100px;
-      border: 1px solid black;
-      border-radius: 50%;
-      padding: 10px;
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: 500;
+    .underline {
+      width: 80px;
+      height: 2px;
+      background-color: gray;
+      margin: 8px auto 0 auto;
+      border-radius: 2px;
     }
   }
   .Counter {
@@ -74,33 +72,141 @@
         }
       }
     }
-    .Heart {
-      i {
-        font-size: 40px;
-        color: pink;
-        animation: moveUpDown 3s ease-in-out infinite;
-      }
-    }
+
     .Day-counter {
       font-size: 50px;
       font-weight: 600;
       color: #5d5d81;
     }
     span {
-      color: #777;
+      color: pink;
+      font-size: large;
     }
   }
-  .partner {
+  .content {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    img {
-      height: 100px;
-      width: 100px;
-      border: 1px solid black;
-      border-radius: 50%;
-      padding: 10px;
+    padding: 25px;
+    margin: 20px 0;
+    .user {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 100px;
+        width: 100px;
+        border: 1px solid gray;
+        border-radius: 50%;
+        padding: 10px;
+      }
     }
+    .mid-user {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 30px;
+      font-size: 18px;
+      font-weight: 500;
+      i.fa-heart {
+        font-size: 30px;
+        color: pink;
+        margin: 10px 0;
+        animation: moveUpDown 3s ease-in-out infinite;
+      }
+    }
+    .partner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 100px;
+        width: 100px;
+        border: 1px solid gray;
+        border-radius: 50%;
+        padding: 10px;
+      }
+    }
+  }
+
+  .detail-date {
+    width: 80%;
+
+    border: 2px solid pink;
+    border-radius: 10px;
+    display: flex;
+    position: relative;
+    padding: 20px;
+    .date-content {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      column-gap: 10px;
+      .block-date {
+        width: 25%;
+        border: 2px solid pink;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    }
+    .now-date {
+      position: absolute;
+      bottom: -15px;
+      left: 20px;
+      border: 2px solid pink;
+      padding: 2px;
+      border-radius: 5px;
+      background-color: white;
+    }
+    .time {
+      position: absolute;
+      bottom: -15px;
+      right: 20px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      background-color: pink;
+    }
+  }
+
+  .journey {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    .line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      width: 100%;
+      .mid {
+        border-radius: 15px;
+        width: 35%;
+        height: 2px;
+        background-color: gray;
+        opacity: 0.5;
+        margin: 0 10px;
+      }
+      i.fa-heart {
+        font-size: 20px;
+        color: pink;
+        animation: moveUpDown 3s ease-in-out infinite;
+      }
+    }
+  }
+  .date {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: gray;
+    font-weight: 500;
+    padding-bottom: 50px;
   }
 }

@@ -13,15 +13,20 @@
     display: flex;
     align-items: center;
     align-items: center;
-    i {
-      color: #f7a9a9;
-      font-size: 24px;
-    }
-    .Navbar-logo {
-      color: #5d5d81;
-      font-size: 24px;
-      font-weight: bold;
-      padding-left: 5px;
+    .left-container {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      i {
+        color: #f7a9a9;
+        font-size: 24px;
+      }
+      .Navbar-logo {
+        color: #5d5d81;
+        font-size: 24px;
+        font-weight: bold;
+        padding-left: 5px;
+      }
     }
   }
   .Navbar-right-content {
@@ -169,7 +174,6 @@
       justify-content: center;
       align-items: end;
       font-size: larger;
-      font-weight: bold;
       border-bottom: 2px solid #ddd;
       border-top: 2px solid #ddd;
       cursor: pointer;

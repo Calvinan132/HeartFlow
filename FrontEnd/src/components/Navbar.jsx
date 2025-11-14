@@ -17,13 +17,11 @@ const Navbar = () => {
 
   return (
     <div className="Navbar-container container-xl navbar-expand-md ">
-      <div
-        onClick={() => navigate("/")}
-        style={{ cursor: "pointer" }}
-        className="Navbar-left-content"
-      >
-        <i className="fa-solid fa-heart"></i>
-        <div className="Navbar-logo">HeartNote</div>
+      <div className="Navbar-left-content">
+        <div className="left-container" onClick={() => navigate("/")}>
+          <i className="fa-solid fa-heart"></i>
+          <div className="Navbar-logo">HeartNote</div>
+        </div>
       </div>
       <div className="Navbar-right-content collapse navbar-collapse">
         <div className="Navbar-notification">

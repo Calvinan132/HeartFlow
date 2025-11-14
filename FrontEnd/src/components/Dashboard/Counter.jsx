@@ -56,23 +56,15 @@ const Counter = () => {
       console.log(e);
     }
   };
+  const currentDate = new Date();
+  const loveDateObj = new Date(loveDate);
   return (
     <div className="Dashboard-counter col-12">
-      {userData ? (
-        <div className="user">
-          <img src={userData.image_url}></img>
-          <b className="name">{userData.lastname + " " + userData.firstname}</b>
-        </div>
-      ) : (
-        <div className="user">
-          <img src="https://res.cloudinary.com/dy6glwq3r/image/upload/v1759488628/yhphnu4lksehsqhjjb9j.png"></img>
-          <b className="name">Chưa có</b>
-        </div>
-      )}
+      <div className="title">
+        Our Journey
+        <div className="underline"></div>
+      </div>
       <div className="Counter">
-        <div className="Heart">
-          <i className="fa-solid fa-heart"></i>
-        </div>
         <div className="Day-counter" onClick={togglePopup}>
           {!totalDate ? "00" : totalDate < 10 ? "0" + totalDate : totalDate}
         </div>
@@ -103,17 +95,72 @@ const Counter = () => {
           </div>
         </div>
       </div>
-      {partner ? (
-        <div className="partner">
-          <img src={partner.image_url}></img>
-          <b className="name">{partner.lastname + " " + partner.firstname}</b>
+      <div className="content ">
+        {userData ? (
+          <div className="user">
+            <img src={userData.image_url}></img>
+            <b className="name">
+              {userData.lastname + " " + userData.firstname}
+            </b>
+          </div>
+        ) : (
+          <div className="user">
+            <img src="https://res.cloudinary.com/dy6glwq3r/image/upload/v1759488628/yhphnu4lksehsqhjjb9j.png"></img>
+            <b className="name">Chưa có</b>
+          </div>
+        )}
+        <div className="mid-user">
+          <i className="fa-regular fa-heart"></i>
         </div>
-      ) : (
-        <div className="partner">
-          <img src="https://res.cloudinary.com/dy6glwq3r/image/upload/v1759488628/yhphnu4lksehsqhjjb9j.png"></img>
-          <b className="name">Chưa có </b>
+        {partner ? (
+          <div className="partner">
+            <img src={partner.image_url}></img>
+            <b className="name">{partner.lastname + " " + partner.firstname}</b>
+          </div>
+        ) : (
+          <div className="partner">
+            <img src="https://res.cloudinary.com/dy6glwq3r/image/upload/v1759488628/yhphnu4lksehsqhjjb9j.png"></img>
+            <b className="name">Chưa có </b>
+          </div>
+        )}
+      </div>
+      <div className="detail-date container-fluid">
+        <div className="date-content ">
+          <div className="block-date">
+            <span>00</span>
+            <b>Năm</b>
+          </div>
+          <div className="block-date">
+            <span>00</span>
+            <b>Tháng</b>
+          </div>
+          <div className="block-date">
+            <span>00</span>
+            <b>tuần</b>
+          </div>
+          <div className="block-date">
+            <span>00</span>
+            <b>Ngày</b>
+          </div>
         </div>
-      )}
+        <div className="now-date">#00/00/0000</div>
+        <div className="time">00:00:00</div>
+      </div>
+      <div className="journey">
+        <div className="line">
+          <div className="mid"></div>
+          <i className="fa-regular fa-heart" style={{ color: "pink" }}></i>
+          <div className="mid"></div>
+        </div>
+      </div>
+      <div className="date">
+        <div className="start">
+          First Date: {loveDateObj.toLocaleDateString("vi-VN")}
+        </div>
+        <div className="now">
+          Today: {currentDate.toLocaleDateString("vi-VN")}
+        </div>
+      </div>
     </div>
   );
 };

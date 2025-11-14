@@ -127,7 +127,7 @@ const Memories = () => {
   }
 
   const event = findClosestUpcomingEvent(memories);
-
+  console.log("Closest Event:", event);
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">
@@ -146,7 +146,9 @@ const Memories = () => {
                 <b>{event?.title}</b>
               </div>
               <div className="Memory-content">{event?.content}</div>
-              <div className="Memory-sign">{getUsername(event?.user_id)}</div>
+              <div className="Memory-sign">
+                {event ? getUsername(event?.user_id) : "Không có sự kiện nào!"}
+              </div>
               <div className="Memory-edit"></div>
             </div>
             <div className="Remaining">

@@ -1,7 +1,8 @@
 .Dashboard-container {
   height: 92vh;
   width: 100%;
-  background-color: #f5f5f7;
+  background-color: pink;
+
   .Dashboard-left {
     display: flex;
     justify-content: end;
@@ -105,5 +106,11 @@
   }
   50% {
     transform: translateY(-3px);
+  }
+}
+
+@media (min-width: 768px) {
+  .Dashboard-container {
+    background-color: #f5f5f7;
   }
 }
