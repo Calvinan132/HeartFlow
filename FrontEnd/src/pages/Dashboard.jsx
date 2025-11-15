@@ -37,14 +37,14 @@ const Dashboard = () => {
   };
   return (
     <div className="Dashboard-container container-fluid">
-      <div className="Dashboard-content row pt-3">
-        <div className="Dashboard-left d-none d-md-flex col-md-3 ">
+      <div className="Dashboard-content row ">
+        <div className="Dashboard-left d-none d-md-flex col-md-3 pt-3 ">
           <Sidebar></Sidebar>
         </div>
-        <div className="Dashboard-mid col-12 col-md-6 pt-5 pt-md-0">
+        <div className="Dashboard-mid col-12 col-md-6 pt-3 pt-md-0">
           <Counter></Counter>
         </div>
-        <div className="Dashboard-right d-none d-md-flex col-md-3">
+        <div className="Dashboard-right d-none d-md-flex col-md-3 pt-3">
           <div className="Date">
             <div className="Date-container">
               <b>Love days</b>

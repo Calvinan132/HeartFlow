@@ -146,6 +146,12 @@ const Counter = () => {
         <div className="now-date">#00/00/0000</div>
         <div className="time">00:00:00</div>
       </div>
+      <div className="notification">
+        <span>
+          Đôi khi ta thích một người chỉ bởi vì người đó CÃI NHAU rẩt hợp với
+          mình
+        </span>
+      </div>
       <div className="journey">
         <div className="line">
           <div className="mid"></div>
