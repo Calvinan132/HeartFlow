@@ -5,7 +5,8 @@ import {
   getAllCategories,
   getProductsByCategory,
 } from "../controllers/shopControllers/productsController.js";
-
+import { addToCart } from "../controllers/shopControllers/cartControllers.js";
+//
 import authUser from "../middleWares/authUser.js";
 
 let shopRouter = express.Router();
@@ -14,5 +15,6 @@ shopRouter.get("/products", getAllProducts);
 shopRouter.get("/products/:id", getProductById);
 shopRouter.get("/categories", getAllCategories);
 shopRouter.get("/products/category/:categoryId", getProductsByCategory);
+shopRouter.post("/addtocart", authUser, addToCart);
 
 export default shopRouter;

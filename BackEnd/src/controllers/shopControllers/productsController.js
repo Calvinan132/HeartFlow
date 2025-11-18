@@ -2,7 +2,14 @@ import db from "../../config/db.js";
 
 let getAllProducts = async (req, res) => {
   try {
-    const [rows] = await db.execute("select * from products ");
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    const offset = (page - 1) * limit;
+
+    const [rows] = await db.query(`SELECT * FROM products LIMIT ? OFFSET ?`, [
+      limit,
+      offset,
+    ]);
     res.json({ success: true, data: rows });
   } catch (e) {
     console.log("Lỗi từ backend: ", e.message);
@@ -19,7 +26,7 @@ let getProductById = async (req, res) => {
       return res.json({ message: "Không tìm thấy sản phẩm" });
     }
 
-    res.json(rows[0]);
+    res.json({ success: true, data: rows[0] });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Lỗi server khi lấy chi tiết sản phẩm" });

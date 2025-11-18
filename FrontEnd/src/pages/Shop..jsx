@@ -1,7 +1,37 @@
 import "./Shop.scss";
 import Sidebar from "../components/Sidebar";
 import Card from "../components/Shop/Card";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { AppContext } from "../context/AppContext";
+
 let Shop = () => {
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const { backendUrl } = useContext(AppContext);
+  useEffect(() => {
+    // 3. Định nghĩa hàm gọi API
+    async function fetchProducts() {
+      try {
+        const response = await axios.get(
+          backendUrl + `/api/shop/products?page=${page}&limit=4`
+        );
+        const data = response.data;
+        setProducts((prev) => [...prev, ...data.data]);
+      } catch (err) {
+        if (err.response) {
+          console.error("Lỗi API:", err.response.data.message || err.message);
+        } else if (err.request) {
+          console.error("Không thể kết nối đến server:", err.message);
+        } else {
+          console.error("Lỗi:", err.message);
+        }
+      }
+    }
+    // 5. Gọi hàm
+    fetchProducts();
+  }, [page]);
+
   return (
     <div className="Shop-container container-fluid">
       <div className="Shop-content row pt-3">
@@ -18,8 +48,14 @@ let Shop = () => {
           </div>
           <div className="container py-4">
             <div className="Products row g-3 ">
-              <Card></Card>
+              <Card products={products}></Card>
             </div>
+            <button
+              className="Load-more btn btn-outline-primary mt-4 d-block mx-auto"
+              onClick={() => setPage(page + 1)}
+            >
+              Xem thêm
+            </button>
           </div>
         </div>
         <div className="Right-content d-none d-md-flex col-md-3">

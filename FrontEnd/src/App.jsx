@@ -10,6 +10,7 @@ import Friends from "./pages/Friends";
 import Register from "./pages/Register";
 import Pet from "./pages/Pet";
 import Location from "./pages/Location";
+import ProductDetail from "./components/Shop/ProductDetail";
 
 import "./App.css";
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/chat" element={<Chatting />} />
         <Route path="/Memories" element={<Memories />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/addfriends" element={<Friends />} />
         <Route path="/register" element={<Register />} />
         <Route path="/pet" element={<Pet />} />

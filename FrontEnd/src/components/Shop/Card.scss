@@ -1,21 +1,30 @@
 .Product {
-  height: 350px;
+  height: 300px;
   border: 1px solid green;
   padding: 0;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   .Picture {
     height: 60%;
-    width: 90%;
+    width: 100%;
     background-color: black;
   }
-  .Name {
-  }
-  .Rate {
-    b {
-      color: rgb(255, 221, 0);
+  .Info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    .Name {
+      font-weight: bold;
+      font-size: smaller;
+    }
+    .Rate {
+      b {
+        color: rgb(255, 221, 0);
+      }
     }
   }
 }

@@ -56,8 +56,79 @@ const Counter = () => {
       console.log(e);
     }
   };
-  const currentDate = new Date();
+  function getDayofMonth(month, year) {
+    if (
+      month === 1 ||
+      month === 3 ||
+      month === 5 ||
+      month === 7 ||
+      month === 8 ||
+      month === 10 ||
+      month === 12
+    )
+      return 31;
+    else if (month === 4 || month === 6 || month === 9 || month === 11)
+      return 30;
+    else {
+      if (year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0)) return 29;
+      else return 28;
+    }
+  }
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const loveDateObj = new Date(loveDate);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+  const [year, setYear] = useState(0);
+  const [month, setMonth] = useState(0);
+  const [week, setWeek] = useState(0);
+  const [day, setDay] = useState(0);
+
+  useEffect(() => {
+    if (!loveDate) return;
+
+    const loveDateObj = new Date(loveDate);
+    const now = new Date(); // Dùng thời gian hiện tại để tính chính xác
+
+    let years = now.getFullYear() - loveDateObj.getFullYear();
+    let months = now.getMonth() - loveDateObj.getMonth();
+    let days = now.getDate() - loveDateObj.getDate();
+
+    // Hàm lấy số ngày trong tháng
+    const getDayofMonth = (m, y) => {
+      return new Date(y, m + 1, 0).getDate(); // Cách nhanh hơn để lấy số ngày
+    };
+
+    if (days < 0) {
+      months--;
+      // Lấy số ngày của tháng trước đó
+      const prevMonthDays = getDayofMonth(
+        now.getMonth() - 1,
+        now.getFullYear()
+      );
+      days += prevMonthDays;
+    }
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    const weeks = Math.floor(days / 7);
+    const remainingDays = days % 7;
+
+    setYear(years);
+    setMonth(months);
+    setWeek(weeks);
+    setDay(remainingDays);
+  }, [loveDate, currentDate]);
+
   return (
     <div className="Dashboard-counter col-12">
       <div className="title">
@@ -127,24 +198,24 @@ const Counter = () => {
       <div className="detail-date container-fluid">
         <div className="date-content ">
           <div className="block-date">
-            <span>00</span>
+            <span>{year < 10 ? "0" + year : year}</span>
             <b>Năm</b>
           </div>
           <div className="block-date">
-            <span>00</span>
+            <span>{month < 10 ? "0" + month : month}</span>
             <b>Tháng</b>
           </div>
           <div className="block-date">
-            <span>00</span>
+            <span>{week < 10 ? "0" + week : week}</span>
             <b>tuần</b>
           </div>
           <div className="block-date">
-            <span>00</span>
+            <span>{day < 10 ? "0" + day : day}</span>
             <b>Ngày</b>
           </div>
         </div>
-        <div className="now-date">#00/00/0000</div>
-        <div className="time">00:00:00</div>
+        <div className="now-date">#{currentDate.toLocaleDateString("Vi")}</div>
+        <div className="time">{`${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`}</div>
       </div>
       <div className="notification">
         <span>
