@@ -140,13 +140,16 @@ let response = async (req, res) => {
 
 let setDate = async (req, res) => {
   try {
-    let { id, partner } = req.user;
-    let { loveDate } = req.body;
+    let { id } = req.user;
+    let { loveDate, partner } = req.body;
     await db.execute(
       "update partner_requests set love_date = ? where sender_id = ? or sender_id = ?",
       [loveDate, id, partner]
     );
-    res.json({ success: true, message: "Cập nhật ngày yêu thành công." });
+    res.json({
+      success: true,
+      message: "Cập nhật ngày yêu thành công.",
+    });
   } catch (e) {
     console.log(e);
     res.json({ success: false, message: "Lỗi từ backend" });
@@ -155,12 +158,19 @@ let setDate = async (req, res) => {
 
 let loadDate = async (req, res) => {
   try {
-    let { id, partner } = req.user;
-    let [date] = await db.query(
+    let { id } = req.user;
+    let partner = req.params.partner;
+    if (!id || !partner) {
+      return res.json({
+        success: false,
+        message: "Thiếu ID người dùng hoặc đối tác.",
+      });
+    }
+    let [date] = await db.execute(
       "select Date_format(love_date,'%Y-%m-%d') AS love_date from partner_requests where sender_id = ? or sender_id = ? ",
       [id, partner]
     );
-    res.json({ success: true, date });
+    res.json({ success: true, date, partner, id });
   } catch (e) {
     console.log(e);
     res.json({ success: false, message: "Lỗi từ backend" });

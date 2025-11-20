@@ -11,7 +11,7 @@ import Register from "./pages/Register";
 import Pet from "./pages/Pet";
 import Location from "./pages/Location";
 import ProductDetail from "./components/Shop/ProductDetail";
-import Cart from "./components/Shop/cart";
+import Cart from "./components/Shop/Cart";
 
 import "./App.css";
 function App() {

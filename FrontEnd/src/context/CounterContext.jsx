@@ -3,12 +3,11 @@ import axios from "axios";
 import { AppContext } from "../context/AppContext";
 
 export const CounterContext = createContext();
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const CounterContextProvider = (props) => {
   const [loveDate, setLoveDate] = useState("");
   const [totalDate, setTotal] = useState(0);
-  const { token } = useContext(AppContext);
+  const { token, userData, backendUrl } = useContext(AppContext);
 
   let now = new Date();
   let counter = () => {
@@ -36,11 +35,15 @@ const CounterContextProvider = (props) => {
   }, [loveDate]);
 
   let loadDate = async () => {
+    const PartnerId = userData?.partner;
     try {
-      let { data } = await axios.get(backendUrl + "/api/partner/loaddate", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (data.success) setLoveDate(data.date[0].love_date);
+      let { data } = await axios.get(
+        backendUrl + `/api/partner/loaddate/${PartnerId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (data.success) setLoveDate(data.date[0]?.love_date);
     } catch (e) {
       console.log("Lỗi từ frontend!", e.message);
     }
@@ -48,7 +51,7 @@ const CounterContextProvider = (props) => {
 
   useEffect(() => {
     loadDate();
-  }, [token]);
+  }, [token, userData?.partner]);
 
   const value = {
     loveDate,

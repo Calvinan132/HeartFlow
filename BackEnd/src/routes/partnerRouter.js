@@ -14,6 +14,6 @@ partnerRouter.post("/request", authUser, request);
 partnerRouter.get("/check", authUser, check);
 partnerRouter.put("/response", authUser, response);
 partnerRouter.put("/setdate", authUser, setDate);
-partnerRouter.get("/loaddate", authUser, loadDate);
+partnerRouter.get("/loaddate/:partner", authUser, loadDate);
 
 export default partnerRouter;

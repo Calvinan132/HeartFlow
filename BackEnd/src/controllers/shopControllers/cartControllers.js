@@ -34,4 +34,14 @@ let addToCart = async (req, res) => {
   }
 };
 
-export { addToCart };
+let getCart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let [cart] = db.execute("select * from cart where user_id = ? ", [userId]);
+    res.json({ success: true, cart });
+  } catch (e) {
+    consolo.log("Lỗi từ frontend: ", e);
+  }
+};
+
+export { addToCart, getCart };

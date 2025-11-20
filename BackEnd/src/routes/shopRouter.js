@@ -5,7 +5,10 @@ import {
   getAllCategories,
   getProductsByCategory,
 } from "../controllers/shopControllers/productsController.js";
-import { addToCart } from "../controllers/shopControllers/cartControllers.js";
+import {
+  addToCart,
+  getCart,
+} from "../controllers/shopControllers/cartControllers.js";
 //
 import authUser from "../middleWares/authUser.js";
 
@@ -16,5 +19,6 @@ shopRouter.get("/products/:id", getProductById);
 shopRouter.get("/categories", getAllCategories);
 shopRouter.get("/products/category/:categoryId", getProductsByCategory);
 shopRouter.post("/addtocart", authUser, addToCart);
+shopRouter.get("/getcart", authUser, getCart);
 
 export default shopRouter;

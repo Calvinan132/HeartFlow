@@ -10,7 +10,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Dashboard = () => {
   const [tmpDate, settmp] = useState("");
   const { loveDate, setLoveDate } = useContext(CounterContext);
-  const { token } = useContext(AppContext);
+  const { token, userData } = useContext(AppContext);
 
   let handleSetDate = (e) => {
     settmp(e.target.value);
@@ -22,6 +22,7 @@ const Dashboard = () => {
       }
       const payload = {
         loveDate: tmpDate,
+        partner: userData.partner,
       };
       let { data } = await axios.put(
         backendUrl + "/api/partner/setdate",
@@ -52,7 +53,7 @@ const Dashboard = () => {
                 <input
                   type="date"
                   className="form-control"
-                  value={tmpDate ? tmpDate : loveDate}
+                  value={tmpDate}
                   onChange={handleSetDate}
                 ></input>
                 <button

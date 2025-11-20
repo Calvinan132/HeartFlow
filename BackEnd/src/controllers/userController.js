@@ -55,7 +55,7 @@ let userRegister = async (req, res) => {
 
 let userLogin = async (req, res) => {
   try {
-    const { username, password, email } = req.body;
+    const { username, password } = req.body;
     const [existingUser] = await db.query(
       "select * from users where username = ? ",
       [username]
@@ -77,8 +77,6 @@ let userLogin = async (req, res) => {
       {
         id: user.id,
         username: user.username,
-        email: user.email,
-        partner: user.partner,
       },
       process.env.JWT_SECRET
       // { expiresIn: "1h" }

@@ -151,7 +151,7 @@ const Counter = () => {
                 <input
                   type="date"
                   className="form-control"
-                  value={tmpDate ? tmpDate : loveDate}
+                  value={tmpDate}
                   onChange={handleSetDate}
                 ></input>
                 <button
