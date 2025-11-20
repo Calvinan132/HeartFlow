@@ -78,6 +78,23 @@ const AppContextProvider = (props) => {
     }
   }, [token]);
 
+  const [cart, setCart] = useState([]);
+
+  let loadCart = async () => {
+    try {
+      let res = await axios.get(backendUrl + "/api/shop/getCart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCart(res.data.cart);
+    } catch (e) {
+      console.log("lỗi frontend: ", e);
+    }
+  };
+
+  useEffect(() => {
+    loadCart();
+  }, [token]);
+
   const value = {
     token,
     setToken,
@@ -91,6 +108,7 @@ const AppContextProvider = (props) => {
     memories,
     setMemories,
     loadMemories,
+    cart,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>

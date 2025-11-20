@@ -39,7 +39,7 @@ let ProductDetail = () => {
 
   return (
     <div className="container-fluid ProductDetail-container">
-      <div className="content flex-column flex-md-row">
+      <div className="content-detail-product flex-column flex-md-row">
         <div className="img">
           {" "}
           <img src={product?.image_url} alt="" />

@@ -4,7 +4,8 @@ import { AppContext } from "../context/AppContext";
 import { NavLink, useNavigate, Link } from "react-router-dom";
 
 const Navbar = () => {
-  const { token, setToken, userData, setUserData } = useContext(AppContext);
+  const { token, setToken, userData, setUserData, cart } =
+    useContext(AppContext);
   const navigate = useNavigate();
   const logout = () => {
     setToken(false);
@@ -14,6 +15,13 @@ const Navbar = () => {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
+
+  let cartBadge = (arr) => {
+    return arr.reduce((acc, curr) => {
+      const quantity = curr.quantity;
+      return acc + quantity;
+    }, 0);
+  };
 
   return (
     <nav className="Navbar-container container-xl navbar-expand-md ">
@@ -28,7 +36,7 @@ const Navbar = () => {
           <i className="fa-solid fa-bell"></i>
         </div>
         <NavLink to={"/cart"} className="Navbar-cart">
-          <span className="cart-badge">3</span>
+          <span className="cart-badge">{cartBadge(cart) || 0}</span>
           <i className="fa-solid fa-cart-shopping"></i>
         </NavLink>
         <div className="Navbar-user-container collapse navbar-collapse">

@@ -170,7 +170,7 @@ let loadDate = async (req, res) => {
       "select Date_format(love_date,'%Y-%m-%d') AS love_date from partner_requests where sender_id = ? or sender_id = ? ",
       [id, partner]
     );
-    res.json({ success: true, date, partner, id });
+    res.json({ success: true, date });
   } catch (e) {
     console.log(e);
     res.json({ success: false, message: "Lỗi từ backend" });

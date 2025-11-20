@@ -16,6 +16,12 @@
     }
     .product {
       border: 1px solid gray;
+      td {
+        img {
+          height: 90px;
+          width: 90px;
+        }
+      }
     }
   }
 }

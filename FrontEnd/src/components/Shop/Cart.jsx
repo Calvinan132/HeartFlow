@@ -1,16 +1,10 @@
 import "./Cart.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { AppContext } from "../../context/AppContext";
 
 let Cart = () => {
-  useEffect(() => {
-    let loadCart = async () => {
-      let res = await axios.get(backendUrl + "/api/shop/getCart");
-      console.log(res);
-    };
-  }, []);
+  const { cart } = useContext(AppContext);
   return (
     <div className="cart-container container-fluid ">
       <div className="cart-content">
@@ -19,22 +13,26 @@ let Cart = () => {
             <tr className="info ">
               <th className="left-info">Sản phẩm</th>
               <th>Đơn giá</th>
-              <th>Số lượng</th>
+              <th>Số lương</th>
               <th>Số tiền</th>
               <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="product">
-              <td className="d-flex">
-                <img></img>
-                <div className="name ">abc</div>
-              </td>
-              <td>50000 đồng </td>
-              <td>50000 đồng </td>
-              <td>50000 đồng </td>
-              <td>50000 đồng </td>
-            </tr>
+            {cart.map((item, index) => {
+              return (
+                <tr className="product" key={index}>
+                  <td className="d-flex">
+                    <img src={item.image_url}></img>
+                    <div className="name ">{item.name}</div>
+                  </td>
+                  <td>{item.price} đồng </td>
+                  <td>{item.quantity} </td>
+                  <td>{item.price * item.quantity}</td>
+                  <td>Xóa </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

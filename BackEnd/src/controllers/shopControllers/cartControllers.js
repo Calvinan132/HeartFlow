@@ -37,10 +37,14 @@ let addToCart = async (req, res) => {
 let getCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    let [cart] = db.execute("select * from cart where user_id = ? ", [userId]);
+    let [cart] = await db.execute(
+      "select * from cart join products on cart.product_id = products.id where user_id = ? ",
+      [userId]
+    );
     res.json({ success: true, cart });
   } catch (e) {
-    consolo.log("Lỗi từ frontend: ", e);
+    console.log("Lỗi từ backend: ", e);
+    res.json({ success: false, message: "Lỗi backend:" + e });
   }
 };
 
