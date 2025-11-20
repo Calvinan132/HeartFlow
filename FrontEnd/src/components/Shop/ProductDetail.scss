@@ -14,7 +14,8 @@
     display: flex;
     .img {
       height: 90%;
-      width: 40%;
+      width: 100%;
+
       margin-right: 30px;
       img {
         width: 100%;
@@ -44,5 +45,10 @@
         }
       }
     }
+  }
+}
+@media (min-width: 768px) {
+  .img {
+    width: 40% !important;
   }
 }

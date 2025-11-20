@@ -14,7 +14,7 @@
   align-items: center;
   .Popup-content {
     height: 50%;
-    width: 50%;
+    width: 90%;
     background-color: white;
     display: flex;
     justify-content: center;
@@ -50,5 +50,10 @@
         padding: 5px;
       }
     }
+  }
+}
+@media (min-width: 768px) {
+  .Popup-content {
+    width: 50% !important;
   }
 }

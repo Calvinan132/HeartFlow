@@ -39,7 +39,7 @@ let ProductDetail = () => {
 
   return (
     <div className="container-fluid ProductDetail-container">
-      <div className="content ">
+      <div className="content flex-column flex-md-row">
         <div className="img">
           {" "}
           <img src={product?.image_url} alt="" />
@@ -86,7 +86,7 @@ let ProductDetail = () => {
               className="btn-cart btn btn-outline-primary mt-4 mx-auto"
               onClick={addToCart}
             >
-              Thêm vào giỏ hàng
+              Thêm giỏ hàng
             </button>
           </div>
         </div>

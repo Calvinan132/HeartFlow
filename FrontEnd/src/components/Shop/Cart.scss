@@ -1,0 +1,21 @@
+.cart-container {
+  height: 92vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .cart-content {
+    width: 80%;
+    height: 80%;
+    .info {
+      border: 1px solid gray;
+      color: gray;
+      .left-info {
+        padding: 10px;
+        width: 30%;
+      }
+    }
+    .product {
+      border: 1px solid gray;
+    }
+  }
+}

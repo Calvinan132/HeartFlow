@@ -127,7 +127,6 @@ const Memories = () => {
   }
 
   const event = findClosestUpcomingEvent(memories);
-  console.log("Closest Event:", event);
   return (
     <div className="Memories-container container-fluid">
       <div className="Memories-content row pt-3">
@@ -255,9 +254,7 @@ const Memories = () => {
               })}
             </div>
           </div>
-        </div>
-        <div className="Memories-right d-none d-md-flex col-md-3">
-          <div className="content-container">
+          <div className="content-container w-50 mx-auto">
             <div
               className="Add-memory"
               onClick={() => {
@@ -268,6 +265,7 @@ const Memories = () => {
             </div>
           </div>
         </div>
+        <div className="Memories-right d-none d-md-flex col-md-3"></div>
       </div>
     </div>
   );

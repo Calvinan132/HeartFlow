@@ -1,7 +1,7 @@
 import "./Navbar.scss";
 import React, { useContext, useState, loadUserData, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 
 const Navbar = () => {
   const { token, setToken, userData, setUserData } = useContext(AppContext);
@@ -16,18 +16,22 @@ const Navbar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <div className="Navbar-container container-xl navbar-expand-md ">
+    <nav className="Navbar-container container-xl navbar-expand-md ">
       <div className="Navbar-left-content">
         <div className="left-container" onClick={() => navigate("/")}>
           <i className="fa-solid fa-heart"></i>
           <div className="Navbar-logo">HeartNote</div>
         </div>
       </div>
-      <div className="Navbar-right-content collapse navbar-collapse">
-        <div className="Navbar-notification">
+      <div className="Navbar-right-content ">
+        <div className="Navbar-notification collapse navbar-collapse">
           <i className="fa-solid fa-bell"></i>
         </div>
-        <div className="Navbar-user-container">
+        <NavLink to={"/cart"} className="Navbar-cart">
+          <span className="cart-badge">3</span>
+          <i className="fa-solid fa-cart-shopping"></i>
+        </NavLink>
+        <div className="Navbar-user-container collapse navbar-collapse">
           {token && userData ? (
             <>
               <div
@@ -130,7 +134,7 @@ const Navbar = () => {
           ) : null}
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

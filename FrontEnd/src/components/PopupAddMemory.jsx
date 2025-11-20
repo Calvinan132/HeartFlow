@@ -39,7 +39,7 @@ const PopupAddMemory = () => {
   return (
     <>
       <div
-        className="Popup-container"
+        className="Popup-container "
         style={!isShowPopup ? { display: "none" } : {}}
       >
         <div className="Popup-content">

@@ -37,7 +37,26 @@
         font-size: 20px;
         color: #777;
       }
-      padding-right: 10px;
+      padding-right: 15px;
+    }
+    .Navbar-cart {
+      position: relative;
+      cursor: pointer;
+      .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: 8px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 7px;
+      }
+      i {
+        font-size: 18px;
+        color: #777;
+      }
+      padding-right: 15px;
     }
     .Navbar-user-container {
       position: relative;
