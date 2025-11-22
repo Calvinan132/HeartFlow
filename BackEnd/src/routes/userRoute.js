@@ -23,5 +23,5 @@ userRouter.post("/add-memory", authUser, addMemory);
 // API lấy tin nhắn giữa 2 user
 userRouter.get("/:userId/:partnerId", getMessage);
 userRouter.get("/:id", authUser, getUserById);
-userRouter.get("/location/:id", authUser, getUserById);
+userRouter.get("/location/:id", getUserById);
 export default userRouter;

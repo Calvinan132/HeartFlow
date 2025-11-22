@@ -6,4 +6,13 @@
     display: flex;
     justify-content: end;
   }
+  .Location-mid {
+    height: 500px; /* chiều cao cố định cho map */
+    width: 100%;
+  }
+
+  .leaflet-container {
+    height: 100%;
+    width: 100%;
+  }
 }

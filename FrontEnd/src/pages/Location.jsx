@@ -2,8 +2,13 @@ import { useEffect, useState, useContext } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import io from "socket.io-client";
 import { AppContext } from "../context/AppContext";
+import axios from "axios";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+// Tọa độ mặc định Hà Nội
+const DEFAULT_LAT = 21.0278;
+const DEFAULT_LNG = 105.8342;
 
 function Location() {
   const { userData } = useContext(AppContext);
@@ -54,17 +59,29 @@ function Location() {
   useEffect(() => {
     if (!userId) return;
 
-    fetch(`${backendUrl}/api/location/${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) setLocations((prev) => ({ ...prev, [userId]: data }));
-      });
+    const getLastLocation = async () => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/api/user/location/${userId}`
+        );
+        const data = response.data;
+        if (data) {
+          setLocations((prev) => ({ ...prev, [userId]: data }));
+        }
+      } catch (error) {
+        console.error("Lấy vị trí cuối cùng thất bại:", error);
+      }
+    };
+
+    getLastLocation();
   }, [userId]);
 
-  // center map theo vị trí user đầu tiên nếu có
-  const center = locations[userId]
-    ? [locations[userId].latitude, locations[userId].longitude]
-    : [0, 0];
+  // Lấy center map: nếu có tọa độ hợp lệ, dùng user; nếu không, Hà Nội
+  const userLoc = locations[userId];
+  const center =
+    userLoc && userLoc.latitude != null && userLoc.longitude != null
+      ? [userLoc.latitude, userLoc.longitude]
+      : [DEFAULT_LAT, DEFAULT_LNG];
 
   return (
     <div className="Location-container container-fluid">
@@ -73,14 +90,17 @@ function Location() {
         <div className="Location-mid col-12 col-md-6">
           <MapContainer center={center} zoom={13} style={{ height: "500px" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            {Object.keys(locations).map((id) => (
-              <Marker
-                key={id}
-                position={[locations[id].latitude, locations[id].longitude]}
-              >
-                <Popup>User: {id}</Popup>
-              </Marker>
-            ))}
+            {Object.keys(locations).map((id) => {
+              const loc = locations[id];
+              if (!loc || loc.latitude == null || loc.longitude == null)
+                return null;
+
+              return (
+                <Marker key={id} position={[loc.latitude, loc.longitude]}>
+                  <Popup>User: {id}</Popup>
+                </Marker>
+              );
+            })}
           </MapContainer>
         </div>
         <div className="Location-right d-none d-md-flex col-md-3"></div>
