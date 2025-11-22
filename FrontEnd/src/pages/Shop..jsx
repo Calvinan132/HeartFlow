@@ -8,7 +8,7 @@ import { AppContext } from "../context/AppContext";
 let Shop = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, cart } = useContext(AppContext);
   useEffect(() => {
     // 3. Định nghĩa hàm gọi API
     async function fetchProducts() {
@@ -31,7 +31,6 @@ let Shop = () => {
     // 5. Gọi hàm
     fetchProducts();
   }, [page]);
-
   return (
     <div className="Shop-container container-fluid">
       <div className="Shop-content row pt-3">
@@ -64,23 +63,25 @@ let Shop = () => {
               <i className="fa-solid fa-cart-shopping"></i>
               <span>Giỏ hàng</span>
             </div>
-            <div className="Products">
-              <div className="Product">
-                <div className="Picture"></div>
-                <div className="Info">
-                  <div className="Name">Iphone 18 Pro Max</div>
-                  <div className="Quantity">Số lượng: 15</div>
-                  <div className="Price">Giá: 50.000.000</div>
-                </div>
-              </div>
-              <div className="Product">
-                <div className="Picture"></div>
-                <div className="Info">
-                  <div className="Name">Iphone 18 Pro Max</div>
-                  <div className="Quantity">Số lượng: 15</div>
-                  <div className="Price">Giá: 50.000.000</div>
-                </div>
-              </div>
+            <div className="Products-cart">
+              {cart.length === 0 ? (
+                <div>Chưa có sản phẩm nào</div>
+              ) : (
+                cart.map((item, index) => {
+                  return (
+                    <div className="Product-cart">
+                      <div className="Picture"></div>
+                      <div className="Info" key={index}>
+                        <div className="Name">{item?.name}</div>
+                        <div className="Quantity">
+                          Số lượng: {item?.quantity}
+                        </div>
+                        <div className="Price">Giá: {item?.price}</div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
             <div className="Payment">Thanh toán</div>
           </div>

@@ -8,6 +8,7 @@ import {
   updateMemory,
   addMemory,
   getMessage,
+  getUserById,
 } from "../controllers/userController.js";
 import authUser from "../middleWares/authUser.js";
 let userRouter = express.Router();
@@ -21,4 +22,5 @@ userRouter.put("/update-memory/:id", authUser, updateMemory);
 userRouter.post("/add-memory", authUser, addMemory);
 // API lấy tin nhắn giữa 2 user
 userRouter.get("/:userId/:partnerId", getMessage);
+userRouter.get("/:id", authUser, getUserById);
 export default userRouter;

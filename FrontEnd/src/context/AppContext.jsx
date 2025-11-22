@@ -91,24 +91,38 @@ const AppContextProvider = (props) => {
     }
   };
 
+  const [CartBadge, setCartBadge] = useState(0);
+
+  let calcCartBadge = (arr) => {
+    return arr.reduce((acc, curr) => {
+      const quantity = curr.quantity;
+      return acc + quantity;
+    }, 0);
+  };
   useEffect(() => {
-    loadCart();
+    if (token) {
+      loadCart();
+    } else {
+      setCart([]); // Reset giỏ hàng khi đăng xuất
+    }
   }, [token]);
 
+  useEffect(() => {
+    setCartBadge(calcCartBadge(cart));
+  }, [cart]);
   const value = {
     token,
-    setToken,
     userData,
-    setUserData,
     backendUrl,
     allUser,
-    setAllUser,
     isShowPopup,
     setShowPopup,
     memories,
     setMemories,
     loadMemories,
     cart,
+    CartBadge,
+    loadCart,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>

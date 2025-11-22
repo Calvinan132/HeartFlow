@@ -49,13 +49,13 @@
           font-size: larger;
           font-weight: 500;
         }
-        .Products {
+        .Products-cart {
           width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 5px;
-          .Product {
+          .Product-cart {
             width: 95%;
             height: 80px;
             border: 1px solid red;

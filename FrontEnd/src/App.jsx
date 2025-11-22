@@ -12,6 +12,7 @@ import Pet from "./pages/Pet";
 import Location from "./pages/Location";
 import ProductDetail from "./components/Shop/ProductDetail";
 import Cart from "./components/Shop/Cart";
+import EditProfile from "./pages/EditProfile";
 
 import "./App.css";
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/pet" element={<Pet />} />
         <Route path="/Location" element={<Location />} />
+        <Route path="/editprofile" element={<EditProfile />} />
       </Routes>
     </div>
   );

@@ -234,6 +234,24 @@ let getMessage = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+let getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    let [row] = await db.query("select * from users where id = ?", [id]);
+    if (row.length === 0)
+      return res.json({
+        succes: false,
+        message: "Không có người dùng này!",
+        id,
+      });
+    let info = row[0];
+    res.json({ succes: true, info });
+  } catch (e) {
+    res.json({ succes: false, message: `Lỗi từ backend: ${e.message}` });
+  }
+};
+
 export {
   userRegister,
   userLogin,
@@ -243,4 +261,5 @@ export {
   updateMemory,
   addMemory,
   getMessage,
+  getUserById,
 };

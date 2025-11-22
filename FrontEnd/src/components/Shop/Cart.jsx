@@ -4,7 +4,20 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 
 let Cart = () => {
-  const { cart } = useContext(AppContext);
+  const { cart, backendUrl, token, loadCart } = useContext(AppContext);
+  let handleRemoveCart = async (productId) => {
+    try {
+      const res = await axios.delete(
+        `${backendUrl}/api/shop/removecart/${productId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      loadCart();
+    } catch (e) {
+      console.log("lỗi từ frontend: ", e);
+    }
+  };
   return (
     <div className="cart-container container-fluid ">
       <div className="cart-content">
@@ -29,7 +42,14 @@ let Cart = () => {
                   <td>{item.price} đồng </td>
                   <td>{item.quantity} </td>
                   <td>{item.price * item.quantity}</td>
-                  <td>Xóa </td>
+                  <td
+                    onClick={() => {
+                      handleRemoveCart(item.product_id);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Xóa
+                  </td>
                 </tr>
               );
             })}

@@ -8,6 +8,7 @@ import {
 import {
   addToCart,
   getCart,
+  removeCart,
 } from "../controllers/shopControllers/cartControllers.js";
 //
 import authUser from "../middleWares/authUser.js";
@@ -20,5 +21,5 @@ shopRouter.get("/categories", getAllCategories);
 shopRouter.get("/products/category/:categoryId", getProductsByCategory);
 shopRouter.post("/addtocart", authUser, addToCart);
 shopRouter.get("/getcart", authUser, getCart);
-
+shopRouter.delete("/removecart/:id", authUser, removeCart);
 export default shopRouter;

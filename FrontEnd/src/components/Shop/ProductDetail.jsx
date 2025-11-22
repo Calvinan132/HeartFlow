@@ -6,7 +6,7 @@ import { AppContext } from "../../context/AppContext";
 
 let ProductDetail = () => {
   const { id } = useParams();
-  const { backendUrl, token } = useContext(AppContext);
+  const { backendUrl, token, loadCart } = useContext(AppContext);
   const [product, setProduct] = useState(null);
   const [quantity, setquantity] = useState(1);
 
@@ -23,18 +23,22 @@ let ProductDetail = () => {
   }, [id]);
 
   const addToCart = async () => {
-    const res = await axios.post(
-      backendUrl + "/api/shop/addtocart",
-      {
-        productId: id,
-        quantity: quantity,
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-
-    alert(res.data.message);
+    try {
+      const res = await axios.post(
+        backendUrl + "/api/shop/addtocart",
+        {
+          productId: id,
+          quantity: quantity,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      loadCart();
+      alert(res.data.message);
+    } catch (e) {
+      console.log("lỗi từ frontend: ", e.message);
+    }
   };
 
   return (

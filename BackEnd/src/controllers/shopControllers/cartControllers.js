@@ -48,4 +48,22 @@ let getCart = async (req, res) => {
   }
 };
 
-export { addToCart, getCart };
+let removeCart = async (req, res) => {
+  try {
+    const userID = req.user.id;
+    const productId = req.params.id;
+    await db.execute("delete from cart where product_id = ? and user_id = ?", [
+      productId,
+      userID,
+    ]);
+    res.json({
+      success: true,
+      message: "Xóa sản phẩm khỏi giỏ hàng thành công",
+    });
+  } catch (e) {
+    console.log("lỗi từ backend: ", e);
+    res.json({ success: false });
+  }
+};
+
+export { addToCart, getCart, removeCart };
