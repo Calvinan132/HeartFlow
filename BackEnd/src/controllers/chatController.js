@@ -34,28 +34,17 @@ let handleConnection = (io, socket) => {
       console.error("Lỗi lưu tin nhắn:", err);
     }
   });
+  socket.on("updateLocation", async ({ userId, latitude, longitude }) => {
+    // Lưu vào database
+    await db.query(
+      `INSERT INTO locations (user_id, latitude, longitude)
+       VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP`,
+      [userId, latitude, longitude, latitude, longitude]
+    );
 
-  socket.on("auto_join", ({ myId, partnerId }) => {
-    const ids = [myId, partnerId].sort((a, b) => a - b);
-    const roomId = `room_${ids[0]}_${ids[1]}`;
-
-    socket.join(roomId);
-    console.log(`User ${myId} joined ${roomId}`);
-
-    socket.emit("room_joined", roomId);
-  });
-
-  socket.on("send_location", async (data) => {
-    const { roomId, userId, lat, lng } = data;
-    socket.to(roomId).emit("receive_location", { lat, lng });
-    try {
-      await db.query(
-        "UPDATE users SET last_lat = ?, last_lng = ? WHERE id = ?",
-        [lat, lng, userId]
-      );
-    } catch (err) {
-      console.error("Lỗi lưu vị trí:", err);
-    }
+    // Phát vị trí cho tất cả client khác (cập nhật thời gian thực)
+    socket.broadcast.emit("locationUpdated", { userId, latitude, longitude });
   });
 
   socket.on("disconnect", () => {

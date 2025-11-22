@@ -252,6 +252,19 @@ let getUserById = async (req, res) => {
   }
 };
 
+let getLocation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await db.query(
+      "SELECT latitude, longitude, updated_at FROM locations WHERE user_id = ? ORDER BY updated_at DESC LIMIT 1",
+      [id]
+    );
+    res.json({ success: true, data: rows[0] });
+  } catch (e) {
+    res.json({ succes: false, message: e });
+  }
+};
+
 export {
   userRegister,
   userLogin,
@@ -262,4 +275,5 @@ export {
   addMemory,
   getMessage,
   getUserById,
+  getLocation,
 };
