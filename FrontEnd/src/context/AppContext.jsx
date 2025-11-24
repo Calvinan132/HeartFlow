@@ -112,7 +112,10 @@ const AppContextProvider = (props) => {
   }, [cart]);
   const value = {
     token,
+    setToken,
     userData,
+    setUserData,
+    loadUserData,
     backendUrl,
     allUser,
     isShowPopup,

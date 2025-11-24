@@ -9,8 +9,10 @@ import {
   addMemory,
   getMessage,
   getUserById,
+  editProfile,
 } from "../controllers/userController.js";
 import authUser from "../middleWares/authUser.js";
+import upload from "../middleWares/multer.js";
 let userRouter = express.Router();
 
 userRouter.post("/register", userRegister);
@@ -24,4 +26,6 @@ userRouter.post("/add-memory", authUser, addMemory);
 userRouter.get("/:userId/:partnerId", getMessage);
 userRouter.get("/:id", authUser, getUserById);
 userRouter.get("/location/:id", getUserById);
+
+userRouter.post("/editprofile", upload.single("image"), authUser, editProfile);
 export default userRouter;

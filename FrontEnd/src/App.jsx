@@ -13,6 +13,7 @@ import Location from "./pages/Location";
 import ProductDetail from "./components/Shop/ProductDetail";
 import Cart from "./components/Shop/Cart";
 import EditProfile from "./pages/EditProfile";
+import Profile from "./pages/Profile";
 
 import "./App.css";
 function App() {
@@ -25,13 +26,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/Profile" element={<Profile />}></Route>
         <Route path="/chat" element={<Chatting />} />
         <Route path="/Memories" element={<Memories />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/addfriends" element={<Friends />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/pet" element={<Pet />} />
         <Route path="/Location" element={<Location />} />
         <Route path="/editprofile" element={<EditProfile />} />

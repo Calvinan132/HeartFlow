@@ -2,11 +2,68 @@ import db from "../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
+
+let editProfile = async (req, res) => {
+  try {
+    const { username, email, firstname, lastname, address } = req.body;
+    const img = req.file;
+    const userId = req.user.id;
+
+    // 1️⃣ Lấy dữ liệu cũ của user
+    const [rows] = await db.execute("SELECT * FROM users WHERE id = ?", [
+      userId,
+    ]);
+
+    if (!rows.length) {
+      return res.json({ success: false, message: "User không tồn tại" });
+    }
+
+    const old = rows[0];
+
+    // 2️⃣ Dùng dữ liệu mới nếu có, không thì giữ nguyên
+    const newUsername = username?.trim() || old.username;
+    const newEmail = email?.trim() || old.email;
+    const newFirstname = firstname?.trim() || old.firstname;
+    const newLastname = lastname?.trim() || old.lastname;
+    const newAddress = address?.trim() || old.address;
+
+    // 3️⃣ Nếu có ảnh mới → upload lên Cloudinary
+    let imgUrl = old.image_url;
+
+    if (img) {
+      const upload = await cloudinary.uploader.upload(img.path, {
+        resource_type: "image",
+      });
+      imgUrl = upload.secure_url;
+    }
+
+    // 4️⃣ Update dữ liệu vào DB
+    await db.execute(
+      `UPDATE users 
+       SET username = ?, email = ?, firstname = ?, lastname = ?, address = ?, image_url = ?
+       WHERE id = ?`,
+      [
+        newUsername,
+        newEmail,
+        newFirstname,
+        newLastname,
+        newAddress,
+        imgUrl,
+        userId,
+      ]
+    );
+
+    res.json({ success: true, message: "Cập nhật thành công" });
+  } catch (e) {
+    console.log("Lỗi backend:", e);
+    res.json({ success: false, message: e.message });
+  }
+};
+
 let userRegister = async (req, res) => {
   try {
     const { username, password, confirmPassword, email, firstname, lastname } =
       req.body;
-    // const img = req.file;
     if (
       !username ||
       !password ||
@@ -28,13 +85,6 @@ let userRegister = async (req, res) => {
     );
     if (existingUser.length !== 0)
       return res.json({ success: false, message: "Tài khoản đã tồn tại !" });
-
-    // upload image to cloudinary
-    // const imageUpload = await cloudinary.uploader.upload(img.path, {
-    //   resource_type: "image",
-    // });
-
-    // const imgUrl = imageUpload.secure_url;
 
     let salt = await bcrypt.genSalt(10);
     let hashedPassword = await bcrypt.hash(password, salt);
@@ -101,10 +151,7 @@ let userLogin = async (req, res) => {
 let loadUserData = async (req, res) => {
   try {
     const { id } = req.user;
-    let profile = await db.query(
-      "select id,username,email,image_url,partner,lastname,firstname from users where id = ? ",
-      [id]
-    );
+    let profile = await db.query("select * from users where id = ? ", [id]);
     res.json({ success: true, profile });
   } catch (e) {
     console.log(e);
@@ -276,4 +323,5 @@ export {
   getMessage,
   getUserById,
   getLocation,
+  editProfile,
 };

@@ -69,8 +69,10 @@
         border-radius: 50%;
         background-color: #777;
         cursor: pointer;
-        i {
-          color: white;
+        .img-avt {
+          height: 30px;
+          width: 30px;
+          border-radius: 50%;
         }
       }
       .Dropdown-user {

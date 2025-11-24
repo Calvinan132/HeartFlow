@@ -41,7 +41,11 @@ const Navbar = () => {
                   setShowDropdown(!showDropdown);
                 }}
               >
-                <i className="fa-solid fa-user"></i>
+                {userData?.image_url ? (
+                  <img src={userData?.image_url} className="img-avt"></img>
+                ) : (
+                  <i className="fa-solid fa-user img-avt"></i>
+                )}
               </div>
               <ul
                 className="Dropdown-user"

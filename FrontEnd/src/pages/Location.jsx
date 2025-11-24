@@ -1,12 +1,36 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 
 import "./Location.scss";
 import Sidebar from "../components/Sidebar";
+import { AppContext } from "../context/AppContext";
+
+const createAvatarElement = (imageUrl) => {
+  // 1. Tạo container DIV
+  const el = document.createElement("div");
+  el.className = "user-avatar-marker";
+
+  // 2. Tạo thẻ IMG
+  const img = document.createElement("img");
+  img.src =
+    imageUrl ||
+    "https://imgs.search.brave.com/XKHwkUJVX5C6T9eyq9OuzsyxHAzohp2u7jphVtP-fxM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNjUv/NDEyLzcyNy9zbWFs/bC91c2VyLWF2YXRh/ci1pbGx1c3RyYXRp/b24tdmVjdG9yLmpw/Zw";
+  img.alt = "User Avatar";
+  img.style.width = `${50}px`;
+  img.style.height = `${50}px`;
+  img.style.borderRadius = "50%";
+  img.style.border = "3px solid #0070FF";
+  img.style.display = "block";
+
+  // 3. Gắn IMG vào DIV
+  el.appendChild(img);
+  return el;
+};
 
 let Location = () => {
   const [MyLocation, setLocation] = useState(null);
+  const { userData } = useContext(AppContext);
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -80,8 +104,10 @@ let Location = () => {
         markerRef.current.setLngLat(userLngLat);
       } else {
         // Nếu Marker chưa tồn tại, tạo mới, gán vào Ref và thêm vào bản đồ
+        const avatarEl = createAvatarElement(userData?.image_url);
         markerRef.current = new maptilersdk.Marker({
-          color: "#0070FF", // Màu xanh cho vị trí người dùng
+          element: avatarEl,
+          anchor: "bottom",
         })
           .setLngLat(userLngLat)
           .addTo(map.current);
