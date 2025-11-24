@@ -7,8 +7,16 @@
     justify-content: end;
   }
   .Location-mid {
-    height: 500px; /* chiều cao cố định cho map */
-    width: 100%;
+    .wrap-map {
+      position: relative;
+      width: 100%;
+      height: 88vh;
+      border: 2px solid black;
+      .map {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 
   .leaflet-container {
