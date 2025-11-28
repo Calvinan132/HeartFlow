@@ -118,7 +118,6 @@ let Location = () => {
     }
   }, [MyLocation]);
 
-  console.log(MyLocation);
   return (
     <div className="Location-container container-fluid">
       <div className="Location-content row pt-3">

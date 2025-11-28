@@ -1,0 +1,34 @@
+.drop-notification {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  transform: translateX(-75%);
+  list-style: none;
+  background-color: white;
+  border: 1px solid gray;
+  padding-left: 0;
+  padding: 5px;
+  li {
+    width: 320px;
+    display: flex;
+    font-size: small;
+    margin-top: 10px;
+    img {
+      height: 40px;
+      width: 40px;
+      border: 1px solid red;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    span {
+      color: gray;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .drop-notification {
+    left: -80px !important;
+    transform: translateX(-20%) !important;
+  }
+}

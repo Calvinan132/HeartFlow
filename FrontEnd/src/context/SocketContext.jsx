@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
   useContext,
-  useCallback, // Thêm useCallback
+  useCallback,
 } from "react";
 import { AppContext } from "./AppContext";
 
@@ -21,12 +21,9 @@ const SocketContextProvider = (props) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [rq, setrq] = useState([]);
+  const [notification, setNotification] = useState([]);
 
-  // ----------------------------------------------------------------
-  // SỬA LỖI SỐ 3: Dùng useCallback
-  // ----------------------------------------------------------------
   const loadFriends = useCallback(async () => {
-    // Thêm guard clause
     if (!token) return;
     try {
       const { data } = await axios.get(`${backendUrl}/api/friend/listfriend`, {
@@ -40,25 +37,15 @@ const SocketContextProvider = (props) => {
     } catch (e) {
       console.log(e);
     }
-  }, [token]); // Chỉ chạy lại khi token thay đổi
+  }, [token]);
 
   useEffect(() => {
     loadFriends();
-  }, [loadFriends]); // Giờ đây ta dùng hàm đã useCallback
+  }, [loadFriends]);
 
-  // ----------------------------------------------------------------
-  // SỬA LỖI SỐ 1: Khởi tạo Socket.IO
-  // Logic của `loadOnlineUser` được chuyển trực tiếp vào đây
-  // ----------------------------------------------------------------
   useEffect(() => {
-    // Guard clause: Chỉ chạy khi có token và userData
     if (!token || !userData) return;
 
-    // `socket` đã tồn tại, không cần tạo mới
-    // (Lưu ý: code gốc của bạn có `!socket`, logic này có thể cần xem lại
-    // nếu bạn muốn kết nối lại khi token thay đổi, nhưng hiện tại ta giữ logic cũ)
-
-    // Khởi tạo kết nối
     const sock = io(backendUrl, { auth: { token } });
 
     sock.on("connect", () => console.log("Socket Connected:", sock.id));
@@ -71,6 +58,10 @@ const SocketContextProvider = (props) => {
       setOnlineUsers(users);
     });
 
+    sock.on("newNotification", (data) => {
+      setNotification((prev) => [data, ...prev]);
+    });
+
     setSocket(sock);
 
     // Hàm Cleanup: Rất quan trọng
@@ -79,30 +70,24 @@ const SocketContextProvider = (props) => {
       setSocket(null);
       console.log("Socket Disconnected");
     };
-  }, [token, userData]); // Phụ thuộc vào token và userData
+  }, [token, userData]);
 
-  // ----------------------------------------------------------------
-  // SỬA LỖI SỐ 2: Race Condition khi tải tin nhắn
-  // ----------------------------------------------------------------
   useEffect(() => {
-    // Guard clause
     if (!receiverId || !userData?.id) {
-      setMessages([]); // Xóa tin nhắn cũ nếu không chọn ai
+      setMessages([]);
       return;
     }
 
-    // Khởi tạo AbortController để hủy request cũ
     const controller = new AbortController();
 
     const fetchMessages = async () => {
       try {
         const res = await axios.get(
-          `${backendUrl}/api/user/${userData.id}/${receiverId}`,
-          { signal: controller.signal } // <-- Gắn signal vào request
+          `${backendUrl}/api/user/formess/${userData.id}/${receiverId}`,
+          { signal: controller.signal }
         );
         setMessages(res.data);
       } catch (err) {
-        // Bỏ qua lỗi nếu đó là lỗi do chúng ta chủ động hủy (abort)
         if (err.name === "CanceledError") {
           console.log("Request tải tin nhắn cũ đã bị hủy.");
         } else {
@@ -113,15 +98,11 @@ const SocketContextProvider = (props) => {
 
     fetchMessages();
 
-    // Cleanup function: Sẽ chạy khi receiverId thay đổi
     return () => {
-      controller.abort(); // <-- Hủy request cũ
+      controller.abort();
     };
-  }, [receiverId, userData?.id]); // Phụ thuộc chính xác vào 2 ID này
+  }, [receiverId, userData?.id]);
 
-  // ----------------------------------------------------------------
-  // SỬA LỖI SỐ 3: Dùng useCallback
-  // ----------------------------------------------------------------
   const checkRQpartner = useCallback(async () => {
     if (!token) return;
     try {
@@ -142,6 +123,26 @@ const SocketContextProvider = (props) => {
     checkRQpartner();
   }, [checkRQpartner]);
 
+  const getNotification = useCallback(async () => {
+    if (!token) return;
+    try {
+      let { data } = await axios.get(backendUrl + "/api/user/getnotification", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (data.success) {
+        setNotification(data.data);
+      } else {
+        console.log("Lỗi dữ liệu");
+      }
+    } catch (e) {
+      console.log("Lỗi từ frontend :", e.message);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    getNotification();
+  }, [getNotification]);
+
   const value = {
     messages,
     setMessages,
@@ -156,6 +157,7 @@ const SocketContextProvider = (props) => {
     setFriends,
     checkRQpartner,
     rq,
+    notification,
   };
   return (
     <SocketContext.Provider value={value}>

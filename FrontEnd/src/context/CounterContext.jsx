@@ -9,31 +9,6 @@ const CounterContextProvider = (props) => {
   const [totalDate, setTotal] = useState(0);
   const { token, userData, backendUrl } = useContext(AppContext);
 
-  let now = new Date();
-  let counter = () => {
-    // Nếu chưa có ngày bắt đầu, đặt tổng ngày là 0
-    if (!loveDate) {
-      setTotal(0);
-      return;
-    }
-    const start = new Date(loveDate);
-    // Xử lý trường hợp ngày không hợp lệ
-    if (isNaN(start.getTime())) {
-      setTotal(0);
-      return;
-    }
-    let now = new Date();
-
-    // Tính toán số ngày
-    var totalDays = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-    setTotal(totalDays);
-  };
-  useEffect(() => {
-    counter();
-    const intervalId = setInterval(counter, 60000); // 60000ms = 1 phút
-    return () => clearInterval(intervalId);
-  }, [loveDate]);
-
   let loadDate = async () => {
     const PartnerId = userData?.partner;
     try {
@@ -43,7 +18,10 @@ const CounterContextProvider = (props) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (data.success) setLoveDate(data.date[0]?.love_date);
+      if (data.success) {
+        setLoveDate(data.date[0]?.love_date);
+        setTotal(data.date[0]?.loveDay);
+      }
     } catch (e) {
       console.log("Lỗi từ frontend!", e.message);
     }

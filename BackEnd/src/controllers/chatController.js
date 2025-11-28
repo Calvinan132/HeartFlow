@@ -34,18 +34,6 @@ let handleConnection = (io, socket) => {
       console.error("Lỗi lưu tin nhắn:", err);
     }
   });
-  socket.on("updateLocation", async ({ userId, latitude, longitude }) => {
-    // Lưu vào database
-    await db.query(
-      `INSERT INTO locations (user_id, latitude, longitude)
-       VALUES (?, ?, ?)
-       ON DUPLICATE KEY UPDATE latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP`,
-      [userId, latitude, longitude, latitude, longitude]
-    );
-
-    // Phát vị trí cho tất cả client khác (cập nhật thời gian thực)
-    socket.broadcast.emit("locationUpdated", { userId, latitude, longitude });
-  });
 
   socket.on("disconnect", () => {
     onlineUsers.delete(socket.userId);

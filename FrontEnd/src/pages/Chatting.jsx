@@ -22,6 +22,7 @@ const Dashboard = () => {
     setReceiverId,
     socket,
     friends,
+    notification,
   } = useContext(SocketContext);
   const [input, setInput] = useState("");
 
@@ -44,10 +45,6 @@ const Dashboard = () => {
     return map;
   }, [allUser]);
 
-  // ----------------------------------------------------------------
-  // TỐI ƯU SỐ 2: Hàm getUsername giờ siêu nhanh (O(1))
-  // useCallback đảm bảo hàm này không bị tạo lại vô ích
-  // ----------------------------------------------------------------
   const getUsername = useCallback(
     (id) => {
       if (id === userData?.id) return "You";
@@ -78,7 +75,6 @@ const Dashboard = () => {
   let checkOnline = (userId) => {
     return onlineUsers.some((id) => id === userId);
   };
-  console.log(messages);
   return (
     <div className="Chatting-container container-fluid">
       <div className="Chatting-content row pt-3">

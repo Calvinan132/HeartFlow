@@ -167,7 +167,7 @@ let loadDate = async (req, res) => {
       });
     }
     let [date] = await db.execute(
-      "select Date_format(love_date,'%Y-%m-%d') AS love_date from partner_requests where sender_id = ? or sender_id = ? ",
+      "select Date_format(love_date,'%Y-%m-%d') AS love_date, abs(datediff(love_date,now())) as loveDay from partner_requests where sender_id = ? or sender_id = ? ",
       [id, partner]
     );
     res.json({ success: true, date });

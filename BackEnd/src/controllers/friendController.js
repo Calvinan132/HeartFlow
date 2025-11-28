@@ -1,8 +1,7 @@
 import db from "../config/db.js";
+import { getIO } from "../config/socket.js";
 
 let request = async (req, res) => {
-  // ID của người gửi (lấy từ token sau khi xác thực)
-
   const senderId = req.user.id;
   const { receiverId } = req.body;
 
@@ -11,7 +10,6 @@ let request = async (req, res) => {
   }
 
   try {
-    // 1. Kiểm tra xem mối quan hệ đã tồn tại chưa (PENDING hoặc ACCEPTED)
     const [existing] = await db.execute(
       `SELECT * FROM friend_requests 
              WHERE (sender_id = ? AND receiver_id = ?) 
@@ -25,14 +23,11 @@ let request = async (req, res) => {
         return res.json({ message: "Hai bạn đã là bạn bè." });
       }
       if (status === "PENDING") {
-        // Có thể là yêu cầu đã được gửi trước đó, hoặc người kia gửi cho mình
         return res.json({
           message: "Yêu cầu đã được gửi hoặc đang chờ phản hồi.",
         });
       }
     }
-
-    // 2. Chèn yêu cầu mới vào database với trạng thái PENDING
     await db.execute(
       `INSERT INTO friend_requests (sender_id, receiver_id, status) 
               VALUES (?, ?, 'PENDING')`,
@@ -40,11 +35,33 @@ let request = async (req, res) => {
     );
 
     // TODO: Gửi thông báo real-time qua Socket.IO tới receiverId
+    const [senderData] = await db.execute(
+      "select lastname, firstname,image_url from users where id = ? ",
+      [senderId]
+    );
+    const notificationData = {
+      senderName: senderData[0].firstname + " " + senderData[0].lastname,
+      senderAvatar: senderData[0].image_url,
+      message: "Đã gửi lời mời kết bạn đến bạn.",
+      type: "FRIEND_REQUEST",
+      time: new Date().toISOString(),
+    };
+    const io = getIO();
+    io.to(receiverId).emit("newNotification", notificationData);
+    await db.execute(
+      "insert into notifications (user_id, type,message,sender_id) values (?, ?, ?, ?)",
+      [
+        receiverId,
+        "FRIEND_REQUEST",
+        "Đã gửi lời mời kết bạn đến bạn.",
+        senderId,
+      ]
+    );
 
-    res.status(201).json({ message: "Yêu cầu kết bạn đã được gửi." });
+    res.json({ message: "Yêu cầu kết bạn đã được gửi." });
   } catch (err) {
     console.error("Lỗi gửi yêu cầu kết bạn:", err);
-    res.status(500).json({ error: "Lỗi Server." });
+    res.json({ error: "Lỗi Server." });
   }
 };
 

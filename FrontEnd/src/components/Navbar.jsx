@@ -2,6 +2,7 @@ import "./Navbar.scss";
 import React, { useContext, useState, loadUserData, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import { NavLink, useNavigate, Link } from "react-router-dom";
+import Notification from "./Notification";
 
 const Navbar = () => {
   const { token, setToken, userData, setUserData, CartBadge } =
@@ -15,6 +16,7 @@ const Navbar = () => {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   return (
     <nav className="Navbar-container container-xl navbar-expand-md ">
@@ -25,8 +27,15 @@ const Navbar = () => {
         </div>
       </div>
       <div className="Navbar-right-content ">
-        <div className="Navbar-notification collapse navbar-collapse">
-          <i className="fa-solid fa-bell"></i>
+        <div className="Navbar-notification">
+          <i
+            style={{ cursor: "pointer" }}
+            className="fa-solid fa-bell"
+            onClick={() => setShowNotification(!showNotification)}
+          ></i>
+          <div style={showNotification ? {} : { display: "none" }}>
+            <Notification></Notification>
+          </div>
         </div>
         <NavLink to={"/cart"} className="Navbar-cart">
           <span className="cart-badge">{CartBadge}</span>
@@ -51,7 +60,13 @@ const Navbar = () => {
                 className="Dropdown-user"
                 style={!showDropdown ? { display: "none" } : { display: "" }}
               >
-                <li>Profile</li>
+                <li
+                  onClick={() => {
+                    navigate("/editprofile");
+                  }}
+                >
+                  Profile
+                </li>
                 <li onClick={logout}>Logout</li>
               </ul>
             </>

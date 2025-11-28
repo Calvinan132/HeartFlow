@@ -1,11 +1,12 @@
 import "./EditProfile.scss";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, use } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 
 let EditProfile = () => {
   const { userData, token, backendUrl } = useContext(AppContext);
   const [image, setImage] = useState(false);
+  const [message, setMessage] = useState(false);
   const [info, setInfo] = useState({
     username: "",
     email: "",
@@ -53,8 +54,10 @@ let EditProfile = () => {
           },
         }
       );
+      setMessage(data);
     } catch (e) {
       console.log("lỗi từ frontend: ", e.message);
+      setMessage({ success: false, message: e.message });
     }
   };
   return (
@@ -139,7 +142,17 @@ let EditProfile = () => {
             }}
           ></input>
         </div>
-        <div className="col-12 mt-3">
+        <div
+          className="message col-12 mt-3 "
+          style={
+            message.success
+              ? { backgroundColor: "green" }
+              : { backgroundColor: "red" }
+          }
+        >
+          {message.message}
+        </div>
+        <div className="col-12 mt-3 form-group">
           <button className="form-control">Submit</button>
         </div>
       </div>

@@ -32,12 +32,13 @@
   .Navbar-right-content {
     display: flex;
     align-items: center;
+    position: relative;
     .Navbar-notification {
+      padding-right: 15px;
       i {
         font-size: 20px;
         color: #777;
       }
-      padding-right: 15px;
     }
     .Navbar-cart {
       position: relative;
@@ -73,6 +74,10 @@
           height: 30px;
           width: 30px;
           border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
         }
       }
       .Dropdown-user {
@@ -131,7 +136,7 @@
         border-radius: 50%;
         background-color: white;
         margin-bottom: 10px;
-        padding: 10px;
+        padding: 2px;
         border: 1px solid black;
       }
       .name {
