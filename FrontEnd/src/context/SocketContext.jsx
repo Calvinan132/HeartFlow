@@ -83,7 +83,7 @@ const SocketContextProvider = (props) => {
     const fetchMessages = async () => {
       try {
         const res = await axios.get(
-          `${backendUrl}/api/user/formess/${userData.id}/${receiverId}`,
+          `${backendUrl}/api/user/${userData.id}/${receiverId}`,
           { signal: controller.signal }
         );
         setMessages(res.data);

@@ -117,7 +117,15 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="info">
-              <img className="avt" src={userData?.image_url}></img>
+              <div className="avt">
+                <img src={userData?.image_url}></img>
+                <i
+                  className="fa-solid fa-pen-to-square"
+                  onClick={() => {
+                    navigate("/editprofile");
+                  }}
+                ></i>
+              </div>
               <div className="name">
                 {userData?.lastname + " " + userData?.firstname}
               </div>
@@ -144,6 +152,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink to="/addfriends" className="Sidebar-Content">
               <i className="fa-solid fa-user-plus"></i>Friends
+            </NavLink>
+            <NavLink to="/love" className="Sidebar-Content">
+              <i className="fa-solid fa-heart"></i>Love
             </NavLink>
           </div>
           {userData ? (

@@ -14,6 +14,7 @@ import ProductDetail from "./components/Shop/ProductDetail";
 import Cart from "./components/Shop/Cart";
 import EditProfile from "./pages/EditProfile";
 import Profile from "./pages/Profile";
+import Love from "./pages/Love";
 
 import "./App.css";
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/pet" element={<Pet />} />
         <Route path="/Location" element={<Location />} />
         <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/love" element={<Love />} />
       </Routes>
     </div>
   );

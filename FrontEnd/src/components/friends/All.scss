@@ -1,0 +1,76 @@
+.Request {
+  .title {
+    margin-top: 15px;
+    font-size: larger;
+    font-weight: bold;
+  }
+  .Request-info {
+    background-color: white;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    margin: 15px 0;
+    justify-content: space-between;
+    .info {
+      display: flex;
+      justify-self: center;
+      align-items: center;
+      .avt {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        margin: 15px;
+        padding: 2px;
+        border: 2px solid gray;
+      }
+      .name {
+        font-size: larger;
+        font-weight: bold;
+        p {
+          color: gray;
+          opacity: 0.5;
+        }
+      }
+    }
+    .act {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .accept {
+        display: flex;
+        justify-self: center;
+        align-items: center;
+        height: 50%;
+        padding: 10px;
+        background-color: green;
+        border-radius: 15px;
+        cursor: pointer;
+      }
+      .refuse {
+        display: flex;
+        justify-self: center;
+        align-items: center;
+        height: 50%;
+        padding: 15px;
+        background-color: red;
+        border-radius: 15px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.Suggest {
+  .title {
+    margin-top: 15px;
+    font-size: larger;
+    font-weight: bold;
+  }
+  .display-info {
+    width: 100%;
+    // display: flex;
+    // justify-content: center;
+    border-bottom: 1px solid gray;
+    border-top: 1px solid gray;
+    padding: 10px 0;
+  }
+}

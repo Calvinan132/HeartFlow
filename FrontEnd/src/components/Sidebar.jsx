@@ -25,6 +25,9 @@ const Sidebar = () => {
       <NavLink to="/addfriends" className="Sidebar-content">
         <i className="fa-solid fa-user-plus"></i>Friends
       </NavLink>
+      <NavLink to="/love" className="Sidebar-content">
+        <i className="fa-solid fa-heart"></i>Love
+      </NavLink>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import db from "../config/db.js";
+import { getIO } from "../config/socket.js";
 
 let request = async (req, res) => {
   const senderId = req.user.id;
@@ -34,6 +35,29 @@ let request = async (req, res) => {
       `INSERT INTO partner_requests (sender_id, receiver_id, status) 
              VALUES (?, ?, 'PENDING')`,
       [senderId, receiverId]
+    );
+
+    const [senderData] = await db.execute(
+      "select lastname, firstname,image_url from users where id = ? ",
+      [senderId]
+    );
+    const notificationData = {
+      senderName: senderData[0].firstname + " " + senderData[0].lastname,
+      senderAvatar: senderData[0].image_url,
+      message: "Đã gửi lời mời làm đạo lữ với bạn.",
+      type: "PARTNER_REQUEST",
+      time: new Date().toISOString(),
+    };
+    const io = getIO();
+    io.to(receiverId).emit("newNotification", notificationData);
+    await db.execute(
+      "insert into notifications (user_id, type,message,sender_id) values (?, ?, ?, ?)",
+      [
+        receiverId,
+        "PARTNER_REQUEST",
+        "Đã gửi lời mời làm đạo lữ với bạn.",
+        senderId,
+      ]
     );
   } catch (e) {
     res.json({ success: false, message: "Lỗi từ backend!" });
@@ -176,4 +200,25 @@ let loadDate = async (req, res) => {
     res.json({ success: false, message: "Lỗi từ backend" });
   }
 };
-export { request, check, response, setDate, loadDate };
+
+let unLove = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { partnerId } = req.body;
+    let [existing] = await db.execute(
+      "select * from partner_requests where ((sender_id = ? and receiver_id = ?) or (sender_id = ? and receiver_id = ?)) and status = 'accepted'",
+      [userId, partnerId, partnerId, userId]
+    );
+    if (!existing[0]) {
+      return res.json({ success: false, message: "Bạn không có người yêu!!!" });
+    }
+    await db.execute(
+      "delete from partner_requests where ((sender_id = ? and receiver_id = ?) or (sender_id = ? and receiver_id = ?)) and status = 'accepted'",
+      [userId, partnerId, partnerId, userId]
+    );
+    res.json({ success: true, message: "Chia tay thành công!" });
+  } catch (e) {
+    res.json({ success: false, message: "Lỗi từ backend: " + e.message });
+  }
+};
+export { request, check, response, setDate, loadDate, unLove };

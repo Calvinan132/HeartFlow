@@ -7,86 +7,27 @@
     justify-content: end;
   }
   .Mid-content {
-    .Search {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      background-color: white;
-      padding: 10px;
-      border-radius: 15px;
-    }
-    .Request {
-      .title {
-        margin-top: 15px;
-        font-size: larger;
-        font-weight: bold;
-      }
-      .Request-info {
-        background-color: white;
-        padding: 15px;
+    .F-Catalog {
+      list-style: none;
+      padding: 0;
+      li {
+        padding: 3px 15px;
+        border: 1px solid pink;
+        margin-right: 5px;
         border-radius: 15px;
-        display: flex;
-        margin: 15px 0;
-        justify-content: space-between;
-        .info {
-          display: flex;
-          justify-self: center;
-          align-items: center;
-          .avt {
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
-            margin: 15px;
-            padding: 10px;
-            border: 1px solid black;
-          }
-          .name {
-            font-size: larger;
-            font-weight: bold;
-            p {
-              color: gray;
-              opacity: 0.5;
-            }
-          }
-        }
-        .act {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          .accept {
-            display: flex;
-            justify-self: center;
-            align-items: center;
-            height: 50%;
-            padding: 10px;
-            background-color: green;
-            border-radius: 15px;
-            cursor: pointer;
-          }
-          .refuse {
-            display: flex;
-            justify-self: center;
-            align-items: center;
-            height: 50%;
-            padding: 15px;
-            background-color: red;
-            border-radius: 15px;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-    .Suggest {
-      .title {
-        margin-top: 15px;
-        font-size: larger;
         font-weight: bold;
-      }
-      .display-info {
-        width: 100%;
-        // display: flex;
-        // justify-content: center;
-        border-bottom: 1px solid gray;
-        border-top: 1px solid gray;
-        padding: 10px 0;
+        color: pink;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.6;
+          background-color: #ff8fa3;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #ff8fa3;
+          color: #ffffff;
+          border-color: white;
+        }
       }
     }
   }

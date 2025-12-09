@@ -53,7 +53,7 @@ let request = async (req, res) => {
       [
         receiverId,
         "FRIEND_REQUEST",
-        "Đã gửi lời mời kết bạn đến bạn.",
+        "đã gửi lời mời kết bạn đến bạn.",
         senderId,
       ]
     );

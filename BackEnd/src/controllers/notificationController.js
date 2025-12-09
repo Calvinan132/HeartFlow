@@ -5,7 +5,7 @@ let getNotification = async (req, res) => {
     const userId = req.user.id;
 
     const [rows] = await db.query(
-      `SELECT n.*, 
+      `SELECT n.*, CONVERT_TZ(time, 'UTC', '+7:00') as time,
               u.firstname, 
               u.lastname, 
               u.image_url AS senderAvatar

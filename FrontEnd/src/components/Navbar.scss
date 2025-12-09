@@ -131,13 +131,22 @@
       padding: 25px;
       border-bottom: 2px solid #ddd;
       .avt {
-        height: 60px;
-        width: 60px;
-        border-radius: 50%;
-        background-color: white;
-        margin-bottom: 10px;
-        padding: 2px;
-        border: 1px solid black;
+        position: relative;
+        img {
+          margin-bottom: 10px;
+          padding: 2px;
+          border: 1px solid black;
+          height: 60px;
+          width: 60px;
+          border-radius: 50%;
+        }
+        i {
+          position: absolute;
+          font-size: x-large;
+          right: -10px;
+          color: black;
+          cursor: pointer;
+        }
       }
       .name {
         font-size: 20px;

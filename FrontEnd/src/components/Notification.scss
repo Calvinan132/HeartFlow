@@ -8,6 +8,11 @@
   border: 1px solid gray;
   padding-left: 0;
   padding: 5px;
+  .empty-msg {
+    width: 300px;
+    text-align: center;
+    padding: 5px 20px;
+  }
   li {
     width: 320px;
     display: flex;

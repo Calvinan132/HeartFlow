@@ -5,6 +5,7 @@ import {
   response,
   setDate,
   loadDate,
+  unLove,
 } from "../controllers/partnerController.js";
 import authUser from "../middleWares/authUser.js";
 
@@ -15,5 +16,6 @@ partnerRouter.get("/check", authUser, check);
 partnerRouter.put("/response", authUser, response);
 partnerRouter.put("/setdate", authUser, setDate);
 partnerRouter.get("/loaddate/:partner", authUser, loadDate);
+partnerRouter.post("/unlove", authUser, unLove);
 
 export default partnerRouter;

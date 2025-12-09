@@ -1,77 +1,24 @@
 import Sidebar from "../components/Sidebar";
 import "./friends.scss";
-import axios from "axios";
-import { useEffect, useState, useContext } from "react";
-import { AppContext } from "../context/AppContext";
+import { useContext, useState } from "react";
 import { SocketContext } from "../context/SocketContext";
+import { AppContext } from "../context/AppContext";
+
 import Friend from "../components/friends/Friend";
-import Suggest from "../components/friends/Suggest";
+import FriendMobile from "../components/friends/FriendMobile";
 import Partner from "../components/Partner";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import PartnerMobile from "../components/friends/PartnerMobile";
+import All from "../components/friends/All";
 
 let Friends = () => {
-  const [requestData, setRequestData] = useState([]);
-  const { token, allUser, userData } = useContext(AppContext);
   const { friends, loadFriends, rq } = useContext(SocketContext);
+  const [Switch, setSwitch] = useState("All");
 
-  let loadRequest = async () => {
-    try {
-      let { data } = await axios.get(backendUrl + "/api/friend/pending", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (data.success) {
-        setRequestData(data.requests);
-      } else {
-        console.log("Lỗi gì đó !", data.message);
-      }
-    } catch (e) {
-      console.log(e.message);
-    }
+  let renderSwitch = () => {
+    if (Switch === "All") return <All />;
+    else if (Switch === "Friend") return <FriendMobile />;
+    else if (Switch === "Partner") return <PartnerMobile />;
   };
-  let handleAccept = async (senderId) => {
-    try {
-      const payload = {
-        senderId,
-        action: "accept",
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/friend/response",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      loadRequest();
-      loadFriends();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const handleReject = async (senderId) => {
-    try {
-      let payload = {
-        senderId,
-        action: "reject",
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/friend/response",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      loadRequest();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    if (token) {
-      loadRequest();
-    }
-  }, [token]);
-
   return (
     <div className="AddFriends-container container-fluid">
       <div className="AddFriends-content row pt-3">
@@ -79,65 +26,33 @@ let Friends = () => {
           <Sidebar></Sidebar>
         </div>
         <div className="Mid-content col-12 col-md-6">
-          <div className="Search">
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </div>
-          <div className="Request">
-            <p className="title">Lời mời kết bạn</p>
-            {requestData.map((item, index) => {
-              return (
-                <div className="Request-info" key={index}>
-                  <div className="info">
-                    <img className="avt" src={item.image_url}></img>
-                    <div className="name">
-                      {item.lastname + " " + item.firstname}
-                      <br></br>
-                      <p>Đã gửi lời mời kết bạn</p>
-                    </div>
-                  </div>
-                  <div className="act">
-                    <div
-                      className="accept"
-                      onClick={() => {
-                        handleAccept(item.sender_id);
-                      }}
-                    >
-                      Chấp nhận
-                    </div>
-                    <div
-                      className="refuse"
-                      onClick={() => {
-                        handleReject(item.sender_id);
-                      }}
-                    >
-                      Từ chối
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="Suggest">
-            <p className="title">Gợi ý kết bạn</p>
-            <div className="display-info ">
-              <div className="row row-cols-1 row-cols-md-3 g-3">
-                {allUser.map((item, index) => {
-                  if (item.id === userData.id) return;
-                  if (friends.some((user) => user.friend_id === item.id))
-                    return;
-                  return (
-                    <Suggest
-                      receiverId={item.id}
-                      img={item.image_url}
-                      lastname={item.lastname}
-                      firstname={item.firstname}
-                      key={index}
-                    ></Suggest>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          <ul className="F-Catalog d-flex d-md-none">
+            <li
+              className={Switch === "All" ? "active" : ""}
+              onClick={() => {
+                setSwitch("All");
+              }}
+            >
+              All
+            </li>
+            <li
+              className={Switch === "Friend" ? "active" : ""}
+              onClick={() => {
+                setSwitch("Friend");
+              }}
+            >
+              Bạn bè
+            </li>
+            <li
+              className={Switch === "Partner" ? "active" : ""}
+              onClick={() => {
+                setSwitch("Partner");
+              }}
+            >
+              Người yêu
+            </li>
+          </ul>
+          {renderSwitch()}
         </div>
         <div className="Right-content d-none d-md-flex col-md-3">
           <div className="List">
