@@ -221,4 +221,27 @@ let unLove = async (req, res) => {
     res.json({ success: false, message: "Lỗi từ backend: " + e.message });
   }
 };
-export { request, check, response, setDate, loadDate, unLove };
+
+let PartnerLocation = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const query =
+      "select l.latitude, l.longitude from users u join locations l on l.user_id = u.partner where u.id = ? ";
+    const [rows] = await db.query(query, [userId]);
+    if (rows.length > 0) {
+      const data = {
+        latitude: rows[0].latitude,
+        longitude: rows[0].longitude,
+      };
+      res.json({ success: true, data });
+    } else {
+      res.json({
+        success: false,
+        message: "Chưa có dữ liệu vị trí của đối phương.",
+      });
+    }
+  } catch (e) {
+    res.json({ success: false, message: `Lỗi từ backend: ${e.message}` });
+  }
+};
+export { request, check, response, setDate, loadDate, unLove, PartnerLocation };

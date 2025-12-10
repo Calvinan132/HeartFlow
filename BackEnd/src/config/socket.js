@@ -9,9 +9,7 @@ let setupSocketIO = (server) => {
   io.use(authSocket);
   io.on("connection", (socket) => {
     socket.join(socket.userId);
-    console.log(
-      `Socket ${socket.id} đã tham gia Room User ID: ${socket.userId}`
-    );
+
     handleConnection(io, socket);
   });
 };

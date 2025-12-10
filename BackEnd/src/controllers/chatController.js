@@ -35,6 +35,23 @@ let handleConnection = (io, socket) => {
     }
   });
 
+  // location
+  socket.on("send_location", async (data) => {
+    const { userId, partnerId, latitude, longitude } = data;
+    socket.to(partnerId).emit("receive_partner_location", {
+      latitude,
+      longitude,
+      updatedAt: new Date(),
+    });
+    try {
+      const query = `
+            INSERT INTO locations (user_id, latitude, longitude) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE latitude = VALUES(latitude),longitude = VALUES(longitude)`;
+      await db.execute(query, [userId, latitude, longitude]);
+    } catch (error) {
+      console.error("Lỗi lưu vị trí vào DB:", error);
+    }
+  });
+
   socket.on("disconnect", () => {
     onlineUsers.delete(socket.userId);
     console.log("User disconnected:", socket.userId); // Cập nhật lại danh sách online
