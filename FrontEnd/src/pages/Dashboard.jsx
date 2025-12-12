@@ -1,48 +1,41 @@
 import "./Dashboard.scss";
 import Sidebar from "../components/Sidebar";
 import Counter from "../components/Dashboard/Counter";
-import { useState, useContext } from "react";
-import { CounterContext } from "../context/CounterContext";
+import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-import axios from "axios";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+import { useDispatch, useSelector } from "react-redux";
+import { setDate, fetchLoveDate } from "../redux/features/slices/counterSlice";
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const [tmpDate, settmp] = useState("");
-  const { loveDate, setLoveDate } = useContext(CounterContext);
-  const { token, userData } = useContext(AppContext);
+  const { token, userData, backendUrl } = useContext(AppContext);
 
-  let handleSetDate = (e) => {
-    settmp(e.target.value);
-  };
+  const loveDate = useSelector((state) => state.counter.loveDate);
+  const isLoading = useSelector((state) => state.counter.isLoading);
+  const isError = useSelector((state) => state.counter.isError);
+
   let handleSubmit = async () => {
-    try {
-      if (!tmpDate) {
-        return;
-      }
-      const payload = {
-        loveDate: tmpDate,
-        partner: userData.partner,
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/partner/setdate",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setLoveDate(tmpDate);
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(
+      setDate({ token: token, newDate: tmpDate, backendUrl: backendUrl })
+    );
   };
+
+  useEffect(() => {
+    dispatch(
+      fetchLoveDate({
+        token: token,
+        partnerId: userData?.partner,
+        backendUrl: backendUrl,
+      })
+    );
+  }, [loveDate]);
   return (
     <div className="Dashboard-container container-fluid">
       <div className="Dashboard-content row ">
         <div className="Dashboard-left d-none d-md-flex col-md-3 pt-3 ">
           <Sidebar></Sidebar>
         </div>
-        <div className="Dashboard-mid col-12 col-md-6 pt-3 pt-md-0">
+        <div className="Dashboard-mid col-12 col-md-6 pt-3 pt-md-0 mt-2">
           <Counter></Counter>
         </div>
         <div className="Dashboard-right d-none d-md-flex col-md-3 pt-3">
@@ -53,8 +46,10 @@ const Dashboard = () => {
                 <input
                   type="date"
                   className="form-control"
-                  value={tmpDate}
-                  onChange={handleSetDate}
+                  value={loveDate}
+                  onChange={(e) => {
+                    settmp(e.target.value);
+                  }}
                 ></input>
                 <button
                   type="submit"

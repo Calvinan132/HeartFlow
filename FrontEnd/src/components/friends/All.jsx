@@ -1,76 +1,40 @@
 import Suggest from "./Suggest";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { SocketContext } from "../../context/SocketContext";
 import { AppContext } from "../../context/AppContext";
 import "./All.scss";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchFriends,
+  checkRQfriend,
+  FHandleAccept,
+  FHandleReject,
+} from "../../redux/features/slices/friendSlice";
 let All = () => {
-  const { token, allUser, userData, backendUrl } = useContext(AppContext);
-  const { friends, loadFriends, rq } = useContext(SocketContext);
+  //redux
+  const dispatch = useDispatch();
+  const friends = useSelector((state) => state.friend.friends);
+  const rqFriends = useSelector((state) => state.friend.rqFriends);
+  useEffect(() => {
+    dispatch(checkRQfriend({ token: token, backendUrl: backendUrl }));
+    dispatch(fetchFriends({ token: token, backendUrl: backendUrl }));
+  }, [friends]);
+  //
 
-  const [requestData, setRequestData] = useState([]);
-  let loadRequest = async () => {
-    try {
-      let { data } = await axios.get(backendUrl + "/api/friend/pending", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (data.success) {
-        setRequestData(data.requests);
-      } else {
-        console.log("Lỗi gì đó !", data.message);
-      }
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
+  const { token, allUser, userData, backendUrl } = useContext(AppContext);
+
   let handleAccept = async (senderId) => {
-    try {
-      const payload = {
-        senderId,
-        action: "accept",
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/friend/response",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      loadRequest();
-      loadFriends();
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(FHandleAccept({ token: token, backendUrl: backendUrl, senderId }));
   };
   const handleReject = async (senderId) => {
-    try {
-      let payload = {
-        senderId,
-        action: "reject",
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/friend/response",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      loadRequest();
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(FHandleReject({ token: token, backendUrl: backendUrl, senderId }));
   };
 
-  useEffect(() => {
-    if (token) {
-      loadRequest();
-    }
-  }, [token]);
   return (
     <div>
       <div className="Request">
         <p className="title">Lời mời kết bạn</p>
-        {requestData.map((item, index) => {
+        {rqFriends?.map((item, index) => {
           return (
             <div className="Request-info" key={index}>
               <div className="info">
@@ -109,7 +73,7 @@ let All = () => {
           <div className="row row-cols-1 row-cols-md-3 g-3">
             {allUser.map((item, index) => {
               if (item.id === userData.id) return;
-              if (friends.some((user) => user.friend_id === item.id)) return;
+              if (friends?.some((user) => user.friend_id === item.id)) return;
               return (
                 <Suggest
                   receiverId={item.id}

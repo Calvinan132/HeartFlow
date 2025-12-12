@@ -1,7 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import "./friends.scss";
-import { useContext, useState } from "react";
-import { SocketContext } from "../context/SocketContext";
+import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 
 import Friend from "../components/friends/Friend";
@@ -10,8 +9,19 @@ import Partner from "../components/Partner";
 import PartnerMobile from "../components/friends/PartnerMobile";
 import All from "../components/friends/All";
 
+import { useSelector, useDispatch } from "react-redux";
+import { checkRQpartner } from "../redux/features/slices/partnerSlice";
+
 let Friends = () => {
-  const { friends, loadFriends, rq } = useContext(SocketContext);
+  const { token, backendUrl } = useContext(AppContext);
+  //redux
+  const dispatch = useDispatch();
+  const friends = useSelector((state) => state.friend.friends);
+  const rqPartner = useSelector((state) => state.friend.rqPartner);
+  useEffect(() => {
+    dispatch(checkRQpartner({ token: token, backendUrl: backendUrl }));
+  }, []);
+
   const [Switch, setSwitch] = useState("All");
 
   let renderSwitch = () => {
@@ -58,7 +68,7 @@ let Friends = () => {
           <div className="List">
             <div className="List-f">
               <b>Lời mời tri kỷ</b>
-              {rq.map((item, index) => {
+              {rqPartner?.map((item, index) => {
                 return (
                   <Partner
                     img={item.image_url}
@@ -72,7 +82,7 @@ let Friends = () => {
             </div>
             <div className="List-f">
               <b>Danh sách liên hệ</b>
-              {friends.map((item, index) => {
+              {friends?.map((item, index) => {
                 return (
                   <Friend
                     img={item.image_url}

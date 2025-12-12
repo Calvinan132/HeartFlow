@@ -3,12 +3,12 @@ import "./Friend.scss";
 import axios from "axios";
 import { SocketContext } from "../../context/SocketContext";
 import { AppContext } from "../../context/AppContext";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 let Friend = ({ img, lastname, firstname, Id }) => {
   const [expand, setExpend] = useState(false);
   const { loadFriends } = useContext(SocketContext);
-  const { token, userData } = useContext(AppContext);
+  const { token, userData, backendUrl } = useContext(AppContext);
+
   let handleUnfriend = async (Id) => {
     try {
       let payload = {

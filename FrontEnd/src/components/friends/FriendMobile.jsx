@@ -1,10 +1,12 @@
 import { useContext } from "react";
-import { SocketContext } from "../../context/SocketContext";
 import { AppContext } from "../../context/AppContext";
 import "./FriendMobile.scss";
-let FriendMobile = () => {
-  const { friends } = useContext(SocketContext);
+import { useSelector } from "react-redux";
 
+let FriendMobile = () => {
+  //redux
+  const friends = useSelector((state) => state.friend.friends);
+  //test
   const { userData } = useContext(AppContext);
   return (
     <div className="container">

@@ -163,12 +163,12 @@ let response = async (req, res) => {
 };
 
 let setDate = async (req, res) => {
+  let { id } = req.user;
+  let { loveDate } = req.body;
   try {
-    let { id } = req.user;
-    let { loveDate, partner } = req.body;
     await db.execute(
-      "update partner_requests set love_date = ? where sender_id = ? or sender_id = ?",
-      [loveDate, id, partner]
+      "update partner_requests set love_date = ? where sender_id = ? or receiver_id = ?",
+      [loveDate, id, id]
     );
     res.json({
       success: true,

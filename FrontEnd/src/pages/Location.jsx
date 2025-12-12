@@ -52,7 +52,7 @@ const Location = () => {
   const defaultMap = { lng: 106.782185, lat: 10.882525 };
   const zoom = 14;
   maptilersdk.config.apiKey = "coLElzBKgIUlXPeQiouU";
-
+  console.log(partner);
   // 1. Khởi tạo Bản đồ (Chạy 1 lần duy nhất)
   useEffect(() => {
     if (map.current) return;
@@ -154,7 +154,7 @@ const Location = () => {
       } else {
         // Nếu chưa có -> Tạo mới (Viền đỏ/hồng)
         // Bạn có thể truyền ảnh người yêu vào đây nếu có trong userData
-        const el = createAvatarElement(partner?.image_url, true);
+        const el = createAvatarElement(partner?.partner_image_url, true);
         partnerMarkerRef.current = new maptilersdk.Marker({ element: el })
           .setLngLat(lnglat)
           .addTo(map.current);

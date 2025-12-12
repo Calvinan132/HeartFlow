@@ -1,15 +1,44 @@
-import { CounterContext } from "../../context/CounterContext";
 import { AppContext } from "../../context/AppContext";
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
 import "./Counter.scss";
+
+//test redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchLoveDate,
+  setDate,
+} from "../../redux/features/slices/counterSlice";
+//test
 
 const Counter = () => {
   const { token, backendUrl } = useContext(AppContext);
-  const { totalDate } = useContext(CounterContext);
   const { userData, allUser } = useContext(AppContext);
   const [tmpDate, settmp] = useState("");
-  const { loveDate, setLoveDate } = useContext(CounterContext);
+
+  //test redux
+  const dispatch = useDispatch();
+  const loveDate = useSelector((state) => state.counter.loveDate);
+  const totalDate = useSelector((state) => state.counter.totalDate);
+
+  useEffect(() => {
+    if (token && userData?.partner && backendUrl) {
+      dispatch(
+        fetchLoveDate({
+          token: token,
+          partnerId: userData?.partner,
+          backendUrl: backendUrl,
+        })
+      );
+    }
+  }, [dispatch, token, userData, backendUrl, loveDate]);
+
+  let handleSubmit = async () => {
+    dispatch(
+      setDate({ token: token, newDate: tmpDate, backendUrl: backendUrl })
+    );
+  };
+
+  //test
 
   const [isMdOrLarger, setIsMdOrLarger] = useState(window.innerWidth >= 768);
   useEffect(() => {
@@ -33,30 +62,6 @@ const Counter = () => {
 
   const partner = allUser.find((user) => user.id === userData.partner);
 
-  let handleSetDate = (e) => {
-    settmp(e.target.value);
-  };
-  let handleSubmit = async () => {
-    try {
-      if (!tmpDate) {
-        return;
-      }
-      const payload = {
-        loveDate: tmpDate,
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/partner/setdate",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setLoveDate(tmpDate);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const loveDateObj = new Date(loveDate);
@@ -76,7 +81,7 @@ const Counter = () => {
     if (!loveDate) return;
 
     const loveDateObj = new Date(loveDate);
-    const now = new Date(); // Dùng thời gian hiện tại để tính chính xác
+    const now = new Date();
 
     let years = now.getFullYear() - loveDateObj.getFullYear();
     let months = now.getMonth() - loveDateObj.getMonth();
@@ -133,8 +138,10 @@ const Counter = () => {
                 <input
                   type="date"
                   className="form-control"
-                  value={tmpDate}
-                  onChange={handleSetDate}
+                  value={loveDate}
+                  onChange={(e) => {
+                    settmp(e.target.value);
+                  }}
                 ></input>
                 <button
                   type="submit"

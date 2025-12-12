@@ -20,28 +20,7 @@ const SocketContextProvider = (props) => {
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [friends, setFriends] = useState([]);
-  const [rq, setrq] = useState([]);
   const [notification, setNotification] = useState([]);
-
-  const loadFriends = useCallback(async () => {
-    if (!token) return;
-    try {
-      const { data } = await axios.get(`${backendUrl}/api/friend/listfriend`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (data.success) {
-        setFriends(data.friends);
-      } else {
-        console.log("Lỗi tải bạn bè!", data.message);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    loadFriends();
-  }, [loadFriends]);
 
   useEffect(() => {
     if (!token || !userData) return;
@@ -103,26 +82,6 @@ const SocketContextProvider = (props) => {
     };
   }, [receiverId, userData?.id]);
 
-  const checkRQpartner = useCallback(async () => {
-    if (!token) return;
-    try {
-      let { data } = await axios.get(backendUrl + "/api/partner/check", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (data.success) {
-        setrq(data.data);
-      } else {
-        console.log("Lỗi dữ liệu checkRQpartner");
-      }
-    } catch (e) {
-      console.log("Lỗi từ frontend (checkRQpartner):", e.message);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    checkRQpartner();
-  }, [checkRQpartner]);
-
   const getNotification = useCallback(async () => {
     if (!token) return;
     try {
@@ -152,11 +111,8 @@ const SocketContextProvider = (props) => {
     setSocket,
     onlineUsers,
     setOnlineUsers,
-    loadFriends,
     friends,
     setFriends,
-    checkRQpartner,
-    rq,
     notification,
   };
   return (

@@ -40,7 +40,7 @@ let Notification = () => {
     );
   }
   return (
-    <ul className="drop-notification " style={{ zIndex: "10000000" }}>
+    <ul className="drop-notification " style={{ zIndex: "2" }}>
       <div className="title-no">
         <b>Thông báo </b>
       </div>
