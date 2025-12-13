@@ -1,5 +1,4 @@
 import Suggest from "./Suggest";
-import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import "./All.scss";
@@ -11,6 +10,8 @@ import {
   FHandleReject,
 } from "../../redux/features/slices/friendSlice";
 let All = () => {
+  const { token, allUser, userData, backendUrl } = useContext(AppContext);
+
   //redux
   const dispatch = useDispatch();
   const friends = useSelector((state) => state.friend.friends);
@@ -20,8 +21,6 @@ let All = () => {
     dispatch(fetchFriends({ token: token, backendUrl: backendUrl }));
   }, [friends]);
   //
-
-  const { token, allUser, userData, backendUrl } = useContext(AppContext);
 
   let handleAccept = async (senderId) => {
     dispatch(FHandleAccept({ token: token, backendUrl: backendUrl, senderId }));

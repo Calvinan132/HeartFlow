@@ -17,11 +17,25 @@ import EditProfile from "./pages/EditProfile";
 import Profile from "./pages/Profile";
 import Love from "./pages/Love";
 
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchFriends } from "./redux/features/slices/friendSlice";
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
+
 import "./App.css";
 function App() {
   let location = useLocation();
   let hidenNavbar1 = location.pathname === "/login";
   let hidenNavbar2 = location.pathname === "/register";
+
+  const dispatch = useDispatch();
+  const { token, backendUrl } = useContext(AppContext);
+
+  useEffect(() => {
+    dispatch(fetchFriends({ token: token, backendUrl: backendUrl }));
+  }, [dispatch, token, backendUrl]);
+
   return (
     <div>
       {!hidenNavbar1 && !hidenNavbar2 && <Navbar />}

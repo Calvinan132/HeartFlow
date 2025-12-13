@@ -19,7 +19,6 @@ const SocketContextProvider = (props) => {
   const [receiverId, setReceiverId] = useState(null);
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [friends, setFriends] = useState([]);
   const [notification, setNotification] = useState([]);
 
   useEffect(() => {
@@ -111,8 +110,6 @@ const SocketContextProvider = (props) => {
     setSocket,
     onlineUsers,
     setOnlineUsers,
-    friends,
-    setFriends,
     notification,
   };
   return (

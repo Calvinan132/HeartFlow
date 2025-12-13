@@ -3,10 +3,18 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
+import { useDispatch } from "react-redux";
+import {
+  addToCart,
+  loadCart,
+} from "../../redux/features/slices/shopSlice/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 let ProductDetail = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams();
-  const { backendUrl, token, loadCart } = useContext(AppContext);
+  const { backendUrl, token } = useContext(AppContext);
   const [product, setProduct] = useState(null);
   const [quantity, setquantity] = useState(1);
 
@@ -21,32 +29,41 @@ let ProductDetail = () => {
   useEffect(() => {
     loadDetail();
   }, [id]);
+  // redux
 
-  const addToCart = async () => {
-    try {
-      const res = await axios.post(
-        backendUrl + "/api/shop/addtocart",
-        {
-          productId: id,
-          quantity: quantity,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      loadCart();
-      alert(res.data.message);
-    } catch (e) {
-      console.log("lỗi từ frontend: ", e.message);
-    }
+  const dispatch = useDispatch();
+  const HandleAddToCart = () => {
+    dispatch(
+      addToCart({
+        token: token,
+        backendUrl: backendUrl,
+        productId: product.id,
+        quantity: quantity,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        dispatch(loadCart({ token: token, backendUrl: backendUrl }));
+      })
+      .catch((error) => {
+        console.error("Lỗi khi thêm vào giỏ hàng:", error);
+      });
   };
+  useEffect(() => {
+    if (token && backendUrl) {
+      dispatch(loadCart({ token: token, backendUrl: backendUrl }));
+    }
+  }, [dispatch, token, backendUrl]);
 
+  //
   return (
     <div className="container-fluid ProductDetail-container">
       <div className="content-detail-product flex-column flex-md-row">
         <div className="img">
-          {" "}
           <img src={product?.image_url} alt="" />
+          <div className="backToShop" onClick={() => navigate("/shop")}>
+            <i className="fa-solid fa-angle-left"></i>
+          </div>
         </div>
         <div className="info">
           <b className="name">{product?.name}</b>
@@ -88,7 +105,7 @@ let ProductDetail = () => {
             </button>
             <button
               className="btn-cart btn btn-outline-primary mt-4 mx-auto"
-              onClick={addToCart}
+              onClick={HandleAddToCart}
             >
               Thêm giỏ hàng
             </button>

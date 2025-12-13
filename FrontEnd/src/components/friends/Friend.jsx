@@ -6,7 +6,6 @@ import { AppContext } from "../../context/AppContext";
 
 let Friend = ({ img, lastname, firstname, Id }) => {
   const [expand, setExpend] = useState(false);
-  const { loadFriends } = useContext(SocketContext);
   const { token, userData, backendUrl } = useContext(AppContext);
 
   let handleUnfriend = async (Id) => {
@@ -21,7 +20,6 @@ let Friend = ({ img, lastname, firstname, Id }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      loadFriends();
     } catch (e) {
       console.log(e);
     }

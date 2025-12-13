@@ -8,22 +8,16 @@ import {
   useRef,
   useMemo,
   useCallback,
+  use,
 } from "react";
 import { AppContext } from "../context/AppContext";
 import { SocketContext } from "../context/SocketContext";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const { token, userData, allUser } = useContext(AppContext);
-  const {
-    messages,
-    setMessages,
-    onlineUsers,
-    receiverId,
-    setReceiverId,
-    socket,
-    friends,
-    notification,
-  } = useContext(SocketContext);
+  const { messages, onlineUsers, receiverId, setReceiverId, socket } =
+    useContext(SocketContext);
   const [input, setInput] = useState("");
 
   const messageBoxRef = useRef(null);
@@ -33,6 +27,8 @@ const Dashboard = () => {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const friends = useSelector((state) => state.friend.friends);
 
   const allUsersList = allUser ?? [];
   const userMap = useMemo(() => {
@@ -87,7 +83,7 @@ const Dashboard = () => {
               <div className="friend-list">
                 <b>Bạn bè</b>
                 <ul style={{ paddingLeft: "0" }}>
-                  {friends.map((item) => {
+                  {friends?.map((item) => {
                     return (
                       <li
                         key={item.friend_id}

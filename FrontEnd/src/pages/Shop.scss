@@ -16,7 +16,6 @@
         margin-bottom: 10px;
         background-image: url("../assets/banner.png");
         background-repeat: repeat;
-
         background-size: contain;
         background-position: center;
       }
@@ -28,19 +27,21 @@
       .Products {
         min-height: 300px;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
       }
     }
     .Right-content {
       .Cart {
         width: 90%;
-        height: 45%;
-        border: 1px solid green;
+        max-height: 350px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border: 1px solid pink;
         .Title {
           width: 100%;
           padding: 10px;
@@ -48,40 +49,63 @@
           align-items: center;
           font-size: larger;
           font-weight: 500;
+          flex-shrink: 0;
+          border-bottom: 1px solid rgba(128, 128, 128, 0.488);
         }
         .Products-cart {
+          flex-grow: 1;
           width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 5px;
+          overflow: auto;
           .Product-cart {
             width: 95%;
-            height: 80px;
-            border: 1px solid red;
             display: flex;
+            margin: 5px 0;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.488);
+
             .Picture {
-              width: 30%;
-              height: 100%;
+              width: 60px;
+              height: 60px;
               background-color: black;
             }
             .Info {
               margin-left: 5px;
               .Name {
-                font-size: large;
+                width: 200px;
+                font-size: medium;
+                font-weight: 500;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              .Price {
+                font-size: smaller;
                 font-weight: 500;
               }
             }
           }
         }
         .Payment {
-          width: 50%;
-          height: 50px;
-          padding: 15px;
+          border-top: 1px solid rgba(128, 128, 128, 0.488);
+          flex-shrink: 0;
           display: flex;
-          justify-content: center;
-          border: 1px solid red;
-          margin-top: 20px;
+          font-size: medium;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          margin-top: 5px;
+          padding: 10px;
+          .action-payment {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: pink;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+          }
         }
       }
     }

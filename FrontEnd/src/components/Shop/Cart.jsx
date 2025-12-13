@@ -2,21 +2,35 @@ import "./Cart.scss";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loadCart,
+  removeCart,
+} from "../../redux/features/slices/shopSlice/cartSlice";
 
 let Cart = () => {
-  const { cart, backendUrl, token, loadCart } = useContext(AppContext);
-  let handleRemoveCart = async (productId) => {
-    try {
-      const res = await axios.delete(
-        `${backendUrl}/api/shop/removecart/${productId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      loadCart();
-    } catch (e) {
-      console.log("lỗi từ frontend: ", e);
+  const { backendUrl, token } = useContext(AppContext);
+  //redux
+  const cart = useSelector((state) => state.cart.cartList);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(loadCart({ token, backendUrl }));
     }
+  }, [token, dispatch, backendUrl]);
+  //
+
+  let handleRemoveCart = async (productId) => {
+    dispatch(removeCart({ token, backendUrl, productId }))
+      .unwrap()
+      .then(() => {
+        console.log("Xóa sản phẩm thành công. Tải lại giỏ hàng...");
+        dispatch(loadCart({ token: token, backendUrl: backendUrl }));
+      })
+      .catch((error) => {
+        console.error("Lỗi khi xóa vào giỏ hàng:", error);
+      });
   };
   return (
     <div className="cart-container container-fluid ">

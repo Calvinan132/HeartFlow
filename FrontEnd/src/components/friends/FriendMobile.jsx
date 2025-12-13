@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 let FriendMobile = () => {
   //redux
   const friends = useSelector((state) => state.friend.friends);
-  //test
+  //
   const { userData } = useContext(AppContext);
   return (
     <div className="container">

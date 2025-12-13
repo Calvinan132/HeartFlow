@@ -1,18 +1,24 @@
 import "./Navbar.scss";
-import React, { useContext, useState, loadUserData, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  loadUserData,
+  useEffect,
+  use,
+} from "react";
 import { AppContext } from "../context/AppContext";
 import { NavLink, useNavigate, Link } from "react-router-dom";
 import Notification from "./Notification";
-
+import { useSelector } from "react-redux";
 const Navbar = () => {
-  const { token, setToken, userData, setUserData, CartBadge } =
-    useContext(AppContext);
+  const { token, setToken, userData, setUserData } = useContext(AppContext);
   const navigate = useNavigate();
   const logout = () => {
     setToken(false);
     localStorage.removeItem("token");
     setUserData(false);
   };
+  const CartBadge = useSelector((state) => state.cart.cartBadge);
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);

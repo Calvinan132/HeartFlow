@@ -78,38 +78,6 @@ const AppContextProvider = (props) => {
     }
   }, [token]);
 
-  const [cart, setCart] = useState([]);
-
-  let loadCart = async () => {
-    try {
-      let res = await axios.get(backendUrl + "/api/shop/getCart", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setCart(res.data.cart);
-    } catch (e) {
-      console.log("lỗi frontend: ", e);
-    }
-  };
-
-  const [CartBadge, setCartBadge] = useState(0);
-
-  let calcCartBadge = (arr) => {
-    return arr.reduce((acc, curr) => {
-      const quantity = curr.quantity;
-      return acc + quantity;
-    }, 0);
-  };
-  useEffect(() => {
-    if (token) {
-      loadCart();
-    } else {
-      setCart([]); // Reset giỏ hàng khi đăng xuất
-    }
-  }, [token]);
-
-  useEffect(() => {
-    setCartBadge(calcCartBadge(cart));
-  }, [cart]);
   const value = {
     token,
     setToken,
@@ -123,9 +91,6 @@ const AppContextProvider = (props) => {
     memories,
     setMemories,
     loadMemories,
-    cart,
-    CartBadge,
-    loadCart,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
