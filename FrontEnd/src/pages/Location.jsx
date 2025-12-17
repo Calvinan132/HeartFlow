@@ -52,7 +52,6 @@ const Location = () => {
   const defaultMap = { lng: 106.782185, lat: 10.882525 };
   const zoom = 14;
   maptilersdk.config.apiKey = "coLElzBKgIUlXPeQiouU";
-  console.log(partner);
   // 1. Khởi tạo Bản đồ (Chạy 1 lần duy nhất)
   useEffect(() => {
     if (map.current) return;
@@ -64,7 +63,6 @@ const Location = () => {
     });
   }, []);
 
-  // 2. Lắng nghe Socket (Nhận vị trí người yêu)
   useEffect(() => {
     if (!socket) return; // Quan trọng: Nếu chưa kết nối thì thoát
 
@@ -124,7 +122,6 @@ const Location = () => {
     };
   }, [socket, userData]); // Thêm userData vào dependency
 
-  // 4. Vẽ Marker CỦA MÌNH
   useEffect(() => {
     if (map.current && MyLocation) {
       const lnglat = [MyLocation.longitude, MyLocation.latitude];
@@ -137,30 +134,25 @@ const Location = () => {
           .setLngLat(lnglat)
           .addTo(map.current);
 
-        // Chỉ fly to lần đầu tiên tìm thấy vị trí
         map.current.flyTo({ center: lnglat, zoom: 15 });
       }
     }
   }, [MyLocation, userData]);
 
-  // 5. Vẽ Marker CỦA NGƯỜI YÊU (Mới thêm)
   useEffect(() => {
     if (map.current && PartnerPosition) {
       const lnglat = [PartnerPosition.longitude, PartnerPosition.latitude];
 
       if (partnerMarkerRef.current) {
-        // Nếu marker đã có -> chỉ update vị trí
         partnerMarkerRef.current.setLngLat(lnglat);
       } else {
-        // Nếu chưa có -> Tạo mới (Viền đỏ/hồng)
-        // Bạn có thể truyền ảnh người yêu vào đây nếu có trong userData
         const el = createAvatarElement(partner?.partner_image_url, true);
         partnerMarkerRef.current = new maptilersdk.Marker({ element: el })
           .setLngLat(lnglat)
           .addTo(map.current);
       }
     }
-  }, [PartnerPosition]);
+  }, [PartnerPosition, partner]);
 
   useEffect(() => {
     let getPartnerLocation = async () => {
@@ -197,6 +189,27 @@ const Location = () => {
     }
   }, [MyLocation, PartnerPosition]);
 
+  const flyToTarget = (targetLocation) => {
+    if (!map.current) return;
+
+    if (
+      !targetLocation ||
+      !targetLocation.latitude ||
+      !targetLocation.longitude
+    ) {
+      console.warn("Chưa có toạ độ để bay đến!");
+      return;
+    }
+
+    map.current.flyTo({
+      center: [targetLocation.longitude, targetLocation.latitude],
+      zoom: 16,
+      speed: 1.2,
+      curve: 1.42,
+      essential: true,
+    });
+  };
+
   return (
     <div className="Location-container container-fluid">
       <div className="Location-content row pt-3">
@@ -209,7 +222,13 @@ const Location = () => {
               {partner ? (
                 <div className="Container-distance">
                   <div className="user-info">
-                    <img src={userData?.image_url} alt="#" className="U-avt" />
+                    <img
+                      src={userData?.image_url}
+                      alt="#"
+                      className="U-avt"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => flyToTarget(MyLocation)}
+                    />
                     <div className="U-name">
                       {userData?.lastname + " " + userData?.firstname}
                     </div>
@@ -218,7 +237,13 @@ const Location = () => {
                     {Distance ? `${Distance} Km` : "0 Km"}
                   </div>
                   <div className="partner-info">
-                    <img src={partner?.image_url} alt="#" className="U-avt" />
+                    <img
+                      src={partner?.image_url}
+                      alt="#"
+                      className="U-avt"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => flyToTarget(PartnerPosition)}
+                    />
                     <div className="U-name">
                       {partner?.lastname + " " + partner?.firstname}
                     </div>

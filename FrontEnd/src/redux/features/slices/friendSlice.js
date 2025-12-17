@@ -50,6 +50,7 @@ export const FHandleAccept = createAsyncThunk(
       let res = await axios.put(backendUrl + "/api/friend/response", payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      return senderId;
     } catch (e) {
       console.log(e);
       return rejectWithValue(e.response.data);
@@ -72,6 +73,7 @@ export const FHandleReject = createAsyncThunk(
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      return senderId;
     } catch (e) {
       console.log(e);
       return rejectWithValue(e.response.data);
@@ -121,6 +123,24 @@ export const friendSlice = createSlice({
       .addCase(FHandleAccept.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
+        const acceptedId = action.payload;
+        const newFriendInfo = state.rqFriends.find(
+          (user) => user.sender_id === acceptedId
+        );
+
+        if (newFriendInfo) {
+          const newFriend = {
+            friend_id: newFriendInfo.sender_id,
+            firstname: newFriendInfo.firstname,
+            lastname: newFriendInfo.lastname,
+            image_url: newFriendInfo.image_url,
+          };
+
+          state.friends.push(newFriend);
+          state.rqFriends = state.rqFriends.filter(
+            (item) => item.sender_id !== acceptedId
+          );
+        }
       })
       .addCase(FHandleAccept.rejected, (state, action) => {
         state.isLoading = false;
@@ -134,6 +154,10 @@ export const friendSlice = createSlice({
       .addCase(FHandleReject.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
+        const deletedId = action.payload;
+        state.rqFriends = state.rqFriends.filter(
+          (item) => item.sender_id !== deletedId
+        );
       })
       .addCase(FHandleReject.rejected, (state, action) => {
         state.isLoading = false;

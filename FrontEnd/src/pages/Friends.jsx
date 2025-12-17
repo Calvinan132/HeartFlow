@@ -17,7 +17,7 @@ let Friends = () => {
   //redux
   const dispatch = useDispatch();
   const friends = useSelector((state) => state.friend.friends);
-  const rqPartner = useSelector((state) => state.friend.rqPartner);
+  const rqPartner = useSelector((state) => state.partner.rqPartner);
   useEffect(() => {
     dispatch(checkRQpartner({ token: token, backendUrl: backendUrl }));
   }, []);
@@ -29,6 +29,7 @@ let Friends = () => {
     else if (Switch === "Friend") return <FriendMobile />;
     else if (Switch === "Partner") return <PartnerMobile />;
   };
+  console.log("rqPartner:", rqPartner);
   return (
     <div className="AddFriends-container container-fluid">
       <div className="AddFriends-content row pt-3">

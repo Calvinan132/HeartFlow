@@ -19,7 +19,7 @@ let All = () => {
   useEffect(() => {
     dispatch(checkRQfriend({ token: token, backendUrl: backendUrl }));
     dispatch(fetchFriends({ token: token, backendUrl: backendUrl }));
-  }, [friends]);
+  }, [dispatch, token, backendUrl]);
   //
 
   let handleAccept = async (senderId) => {
