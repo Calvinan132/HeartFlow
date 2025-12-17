@@ -3,48 +3,38 @@ import axios from "axios";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { SocketContext } from "../context/SocketContext";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { useDispatch, useSelector } from "react-redux";
+import {
+  checkRQpartner,
+  handleRQpartner,
+} from "../redux/features/slices/partnerSlice";
 
 let Partner = ({ img, lastname, firstname, Id }) => {
-  const { token } = useContext(AppContext);
-  const { checkRQpartner } = useContext(SocketContext);
+  const { token, backendUrl } = useContext(AppContext);
+  const rqPartner = useSelector((state) => state.partner.rqPartner);
+  const dispatch = useDispatch();
   let handleAccept = async (senderId) => {
-    try {
-      const payload = {
-        senderId,
+    dispatch(
+      handleRQpartner({
+        token: token,
+        backendUrl: backendUrl,
+        senderId: senderId,
         action: "accept",
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/partner/response",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      checkRQpartner();
-    } catch (e) {
-      console.log(e);
-    }
+      })
+    );
   };
 
   const handleReject = async (senderId) => {
-    try {
-      let payload = {
-        senderId,
+    dispatch(
+      handleRQpartner({
+        token: token,
+        backendUrl: backendUrl,
+        senderId: senderId,
         action: "reject",
-      };
-      let { data } = await axios.put(
-        backendUrl + "/api/partner/response",
-        payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      checkRQpartner();
-    } catch (e) {
-      console.log(e);
-    }
+      })
+    );
   };
+  console.log("rqPartner in Partner component:", rqPartner);
   return (
     <div className="Partner">
       <div className="Container-info">

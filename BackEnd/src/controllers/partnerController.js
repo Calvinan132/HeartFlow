@@ -83,82 +83,51 @@ let response = async (req, res) => {
   const receiverId = req.user.id;
   const { senderId, action } = req.body;
 
-  if (!senderId || !["accept", "reject"].includes(action)) {
-    return res
-      .status(400)
-      .json({ message: "Thiếu thông tin hoặc hành động không hợp lệ." });
-  }
+  try {
+    if (!senderId || !["accept", "reject"].includes(action)) {
+      return res
+        .status(400)
+        .json({ message: "Thiếu thông tin hoặc hành động không hợp lệ." });
+    }
 
-  if (action === "reject") {
-    try {
-      const [result] = await db.execute(
-        `DELETE FROM partner_requests 
+    if (action === "reject") {
+      try {
+        const [result] = await db.execute(
+          `DELETE FROM partner_requests 
                  WHERE sender_id = ? AND receiver_id = ? AND status = 'PENDING'`,
+          [senderId, receiverId]
+        );
+
+        if (result.affectedRows === 0) {
+          return res
+            .status(404)
+            .json({ message: "Không tìm thấy yêu cầu đang chờ xử lý." });
+        }
+
+        return res.json({ message: "Đã từ chối yêu cầu." });
+      } catch (err) {
+        console.error("Lỗi từ chối yêu cầu:", err);
+        return res.status(500).json({ error: "Lỗi Server." });
+      }
+    } else if (action === "accept") {
+      await db.execute(
+        `UPDATE partner_requests 
+             SET status = 'ACCEPTED'
+              WHERE sender_id = ? AND receiver_id = ? AND status = 'PENDING'`,
         [senderId, receiverId]
       );
-
-      if (result.affectedRows === 0) {
-        return res
-          .status(404)
-          .json({ message: "Không tìm thấy yêu cầu đang chờ xử lý." });
-      }
-
-      return res.json({ message: "Đã từ chối yêu cầu." });
-    } catch (err) {
-      console.error("Lỗi từ chối yêu cầu:", err);
-      return res.status(500).json({ error: "Lỗi Server." });
+      await db.execute("update users set partner = ? where id = ?", [
+        receiverId,
+        senderId,
+      ]);
+      await db.execute("update users set partner = ? where id = ?", [
+        senderId,
+        receiverId,
+      ]);
+      res.json({ success: true, message: "Đã chấp nhận yêu cầu." });
     }
-  }
-
-  let connection;
-  try {
-    connection = await db.getConnection();
-    await connection.beginTransaction();
-
-    await connection.execute(`UPDATE users SET partner = ? WHERE id = ?`, [
-      senderId,
-      receiverId,
-    ]);
-
-    await connection.execute(`UPDATE users SET partner = ? WHERE id = ?`, [
-      receiverId,
-      senderId,
-    ]);
-
-    const [updateResult] = await connection.execute(
-      `UPDATE partner_requests 
-             SET status = 'accepted' 
-             WHERE sender_id = ? AND receiver_id = ? AND status = 'PENDING'`,
-      [senderId, receiverId]
-    );
-
-    if (updateResult.affectedRows === 0) {
-      await connection.rollback();
-      return res.status(404).json({
-        message: "Không tìm thấy yêu cầu đang chờ xử lý.",
-      });
-    }
-
-    await connection.execute(
-      `DELETE FROM partner_requests 
-             WHERE (sender_id = ? OR receiver_id = ? OR sender_id = ? OR receiver_id = ?)
-             AND status = 'pending'`,
-      [senderId, receiverId, receiverId, senderId]
-    );
-
-    await connection.commit();
-
-    res.json({ message: "Đã chấp nhận yêu cầu kết bạn." });
-  } catch (err) {
-    if (connection) {
-      await connection.rollback();
-    }
-    console.error("Lỗi chấp nhận yêu cầu:", err);
-    res.status(500).json({ error: "Lỗi Server." });
-  } finally {
-    if (connection) {
-      connection.release();
-    }
+  } catch (e) {
+    res.json({ success: false, message: "Lỗi từ backend!" + e.message });
   }
 };
 
@@ -216,6 +185,10 @@ let unLove = async (req, res) => {
       "delete from partner_requests where ((sender_id = ? and receiver_id = ?) or (sender_id = ? and receiver_id = ?)) and status = 'accepted'",
       [userId, partnerId, partnerId, userId]
     );
+    await db.execute("update users set partner = null where id = ?", [userId]);
+    await db.execute("update users set partner = null where id = ?", [
+      partnerId,
+    ]);
     res.json({ success: true, message: "Chia tay thành công!" });
   } catch (e) {
     res.json({ success: false, message: "Lỗi từ backend: " + e.message });

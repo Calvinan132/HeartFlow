@@ -23,6 +23,30 @@ export const checkRQpartner = createAsyncThunk(
   }
 );
 
+export const handleRQpartner = createAsyncThunk(
+  "user/handleRQpartner",
+  async ({ token, backendUrl, senderId, action }, { rejectWithValue }) => {
+    if (action === "accept" || action === "reject") {
+      try {
+        const payload = {
+          senderId,
+          action: action,
+        };
+        let { data } = await axios.put(
+          backendUrl + "/api/partner/response",
+          payload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        return senderId;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+);
+
 export const partnerSlice = createSlice({
   name: "user",
   initialState,
@@ -39,6 +63,22 @@ export const partnerSlice = createSlice({
         state.rqPartner = action.payload;
       })
       .addCase(checkRQpartner.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(handleRQpartner.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(handleRQpartner.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        const senderId = action.payload;
+        state.rqPartner = state.rqPartner.filter(
+          (userId) => userId.sender_id !== senderId
+        );
+      })
+      .addCase(handleRQpartner.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });
