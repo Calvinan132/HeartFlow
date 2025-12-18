@@ -1,6 +1,22 @@
 import db from "../config/db.js";
 import { getIO } from "../config/socket.js";
 
+let fetchPartner = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const [partnerData] = await db.execute(
+      "select partner, firstname, lastname, image_url from users where id = (select partner from users where id = ?)",
+      [userId]
+    );
+    if (partnerData.length === 0) {
+      return res.json({ success: false, message: "Bạn chưa có đạo lữ." });
+    }
+    res.json({ success: true, data: partnerData[0] });
+  } catch (e) {
+    res.json({ success: false, message: "Lỗi từ backend: " + e.message });
+  }
+};
+
 let request = async (req, res) => {
   const senderId = req.user.id;
   const receiverId = req.body.Id;
@@ -217,4 +233,13 @@ let PartnerLocation = async (req, res) => {
     res.json({ success: false, message: `Lỗi từ backend: ${e.message}` });
   }
 };
-export { request, check, response, setDate, loadDate, unLove, PartnerLocation };
+export {
+  fetchPartner,
+  request,
+  check,
+  response,
+  setDate,
+  loadDate,
+  unLove,
+  PartnerLocation,
+};

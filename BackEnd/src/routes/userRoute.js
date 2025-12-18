@@ -11,6 +11,7 @@ import {
   getUserById,
   editProfile,
   getLocation,
+  getProfileById,
 } from "../controllers/userController.js";
 
 import { getNotification } from "../controllers/notificationController.js";
@@ -25,6 +26,7 @@ userRouter.get("/get-all", authUser, getAllUser);
 userRouter.get("/get-memories", authUser, getMemories);
 userRouter.put("/update-memory/:id", authUser, updateMemory);
 userRouter.post("/add-memory", authUser, addMemory);
+userRouter.get("/profile/:id", authUser, getProfileById);
 // API lấy tin nhắn giữa 2 user
 userRouter.get("/:userId/:partnerId", getMessage);
 userRouter.get("/formess/:id", authUser, getUserById);

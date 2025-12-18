@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
+  partnerData: [],
   rqPartner: [],
   isLoading: false,
   isError: false,
@@ -18,6 +19,20 @@ export const checkRQpartner = createAsyncThunk(
       return res.data.data;
     } catch (e) {
       console.log("Lỗi từ frontend (checkRQpartner):", e.message);
+      return rejectWithValue(e.response.data);
+    }
+  }
+);
+export const fetchPartner = createAsyncThunk(
+  "user/fetchPartner",
+  async ({ token, backendUrl }, { rejectWithValue }) => {
+    try {
+      let res = await axios.get(backendUrl + "/api/partner/fetchPartner", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data.data;
+    } catch (e) {
+      console.log("Lỗi từ frontend (fetchPartner):", e.message);
       return rejectWithValue(e.response.data);
     }
   }
@@ -52,6 +67,19 @@ export const partnerSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      .addCase(fetchPartner.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(fetchPartner.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.partnerData = action.payload;
+      })
+      .addCase(fetchPartner.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
       //check RQ partner
       .addCase(checkRQpartner.pending, (state) => {
         state.isLoading = true;

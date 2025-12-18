@@ -11,8 +11,6 @@ const Dashboard = () => {
   const { token, userData, backendUrl } = useContext(AppContext);
 
   const loveDate = useSelector((state) => state.counter.loveDate);
-  const isLoading = useSelector((state) => state.counter.isLoading);
-  const isError = useSelector((state) => state.counter.isError);
 
   let handleSubmit = async () => {
     dispatch(

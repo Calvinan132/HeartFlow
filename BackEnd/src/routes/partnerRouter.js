@@ -7,11 +7,13 @@ import {
   loadDate,
   unLove,
   PartnerLocation,
+  fetchPartner,
 } from "../controllers/partnerController.js";
 import authUser from "../middleWares/authUser.js";
 
 let partnerRouter = express.Router();
 
+partnerRouter.get("/fetchPartner", authUser, fetchPartner);
 partnerRouter.post("/request", authUser, request);
 partnerRouter.get("/check", authUser, check);
 partnerRouter.put("/response", authUser, response);

@@ -19,7 +19,8 @@ const Counter = () => {
   const dispatch = useDispatch();
   const loveDate = useSelector((state) => state.counter.loveDate);
   const totalDate = useSelector((state) => state.counter.totalDate);
-
+  const isLoading = useSelector((state) => state.counter.isLoading);
+  const partner = useSelector((state) => state.partner.partnerData);
   useEffect(() => {
     if (token && userData?.partner && backendUrl) {
       dispatch(
@@ -38,7 +39,7 @@ const Counter = () => {
     );
   };
 
-  //test
+  //
 
   const [isMdOrLarger, setIsMdOrLarger] = useState(window.innerWidth >= 768);
   useEffect(() => {
@@ -59,8 +60,6 @@ const Counter = () => {
       console.log("Onclick bị vô hiệu hóa vì màn hình nhỏ hơn MD.");
     }
   };
-
-  const partner = allUser.find((user) => user.id === userData.partner);
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -118,6 +117,33 @@ const Counter = () => {
 
   return (
     <div className="Dashboard-counter col-12">
+      {isLoading ? (
+        <>
+          <div
+            className="loading-container position-absolute w-100 h-100"
+            style={{
+              top: "0",
+              bottom: "0",
+              left: "0",
+              right: "0",
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              class="spinner-border"
+              style={{
+                color: "pink",
+                zIndex: "100000",
+              }}
+            ></div>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
       <div className="title">
         Our Journey
         <div className="underline"></div>

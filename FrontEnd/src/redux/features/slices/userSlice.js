@@ -2,21 +2,26 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
+  userData: null,
   isLoading: false,
   isError: false,
 };
 
 // check RQ partner
-export const checkRQpartner = createAsyncThunk(
-  "user/checkRQpartner",
+export const fetchUserData = createAsyncThunk(
+  "user/fetchUserData",
   async ({ token, backendUrl }, { rejectWithValue }) => {
     try {
-      let res = await axios.get(backendUrl + "/api/partner/check", {
+      let { data } = await axios.get(backendUrl + "/api/user/get-profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return res.data.data;
+      if (data.success) {
+        return data.profile[0][0];
+      } else {
+        console.log("Lỗi gì đó !", data.message);
+      }
     } catch (e) {
-      console.log("Lỗi từ frontend (checkRQpartner):", e.message);
+      console.log(e);
       return rejectWithValue(e.response.data);
     }
   }
@@ -28,16 +33,16 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       //check RQ partner
-      .addCase(checkRQpartner.pending, (state) => {
+      .addCase(fetchUserData.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
       })
-      .addCase(checkRQpartner.fulfilled, (state, action) => {
+      .addCase(fetchUserData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
-        state.rqPartner = action.payload;
+        state.userData = action.payload;
       })
-      .addCase(checkRQpartner.rejected, (state, action) => {
+      .addCase(fetchUserData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

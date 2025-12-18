@@ -11,7 +11,6 @@ import {
 
 let Partner = ({ img, lastname, firstname, Id }) => {
   const { token, backendUrl } = useContext(AppContext);
-  const rqPartner = useSelector((state) => state.partner.rqPartner);
   const dispatch = useDispatch();
   let handleAccept = async (senderId) => {
     dispatch(
@@ -34,7 +33,6 @@ let Partner = ({ img, lastname, firstname, Id }) => {
       })
     );
   };
-  console.log("rqPartner in Partner component:", rqPartner);
   return (
     <div className="Partner">
       <div className="Container-info">

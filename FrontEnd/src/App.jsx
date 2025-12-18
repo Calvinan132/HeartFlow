@@ -20,6 +20,8 @@ import Love from "./pages/Love";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchFriends } from "./redux/features/slices/friendSlice";
+import { fetchPartner } from "./redux/features/slices/partnerSlice";
+import { fetchUserData } from "./redux/features/slices/userSlice";
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 
@@ -34,6 +36,8 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchFriends({ token: token, backendUrl: backendUrl }));
+    dispatch(fetchPartner({ token: token, backendUrl: backendUrl }));
+    dispatch(fetchUserData({ token: token, backendUrl: backendUrl }));
   }, [dispatch, token, backendUrl]);
 
   return (
@@ -43,7 +47,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/Profile" element={<Profile />}></Route>
+        <Route path="/Profile/:id" element={<Profile />}></Route>
         <Route path="/chat" element={<Chatting />} />
         <Route path="/Memories" element={<Memories />} />
         <Route path="/shop" element={<Shop />} />

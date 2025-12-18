@@ -40,7 +40,10 @@ let Notification = () => {
     );
   }
   return (
-    <ul className="drop-notification " style={{ zIndex: "2" }}>
+    <ul
+      className="drop-notification "
+      style={{ zIndex: "2", overflowY: "auto", maxHeight: "400px" }}
+    >
       <div className="title-no">
         <b>Thông báo </b>
       </div>

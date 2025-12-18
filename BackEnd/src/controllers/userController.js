@@ -151,7 +151,10 @@ let userLogin = async (req, res) => {
 let loadUserData = async (req, res) => {
   try {
     const { id } = req.user;
-    let profile = await db.query("select * from users where id = ? ", [id]);
+    let profile = await db.query(
+      "select lastname,firstname, address, email,image_url,partner from users where id = ? ",
+      [id]
+    );
     res.json({ success: true, profile });
   } catch (e) {
     console.log(e);
@@ -285,7 +288,10 @@ let getMessage = async (req, res) => {
 let getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    let [row] = await db.query("select * from users where id = ?", [id]);
+    let [row] = await db.query(
+      "select lastname,firstname, address, email,image_url,partner from users where id = ?",
+      [id]
+    );
     if (row.length === 0)
       return res.json({
         succes: false,
@@ -312,6 +318,32 @@ let getLocation = async (req, res) => {
   }
 };
 
+let getProfileById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const query = `SELECT lastname,firstname, address, email,image_url,partner, COUNT(fr.id) AS totalFriends
+      FROM users u
+      LEFT JOIN friend_requests fr ON (u.id = fr.sender_id OR u.id = fr.receiver_id) 
+           AND fr.status = 'accepted'
+      WHERE u.id = ?
+      GROUP BY u.id`;
+    const [rows] = await db.query(query, [id]);
+    if (rows.length === 0)
+      return res.json({
+        success: false,
+        message: "Không có người dùng này!",
+        id,
+      });
+    let info = rows[0];
+    res.json({
+      success: true,
+      info,
+    });
+  } catch (e) {
+    res.json({ success: false, message: `Lỗi từ backend: ${e.message}` });
+  }
+};
+
 export {
   userRegister,
   userLogin,
@@ -324,4 +356,5 @@ export {
   getUserById,
   getLocation,
   editProfile,
+  getProfileById,
 };

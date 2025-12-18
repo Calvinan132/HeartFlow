@@ -15,7 +15,7 @@ import { SocketContext } from "../context/SocketContext";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const { token, userData, allUser } = useContext(AppContext);
+  const { userData, allUser } = useContext(AppContext);
   const { messages, onlineUsers, receiverId, setReceiverId, socket } =
     useContext(SocketContext);
   const [input, setInput] = useState("");
