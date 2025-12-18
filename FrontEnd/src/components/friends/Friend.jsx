@@ -1,8 +1,8 @@
 import { useState, useContext } from "react";
 import "./Friend.scss";
 import axios from "axios";
-import { SocketContext } from "../../context/SocketContext";
 import { AppContext } from "../../context/AppContext";
+import { Link } from "react-router-dom";
 
 let Friend = ({ img, lastname, firstname, Id }) => {
   const [expand, setExpend] = useState(false);
@@ -50,7 +50,10 @@ let Friend = ({ img, lastname, firstname, Id }) => {
     >
       <div className="Container-info">
         <img className="avt" src={img}></img>
-        <div className="name">{lastname + " " + firstname}</div>
+        <Link className="name" to={`/profile/${Id}`}>
+          {lastname + " " + firstname}
+        </Link>
+        <i className="fa-solid fa-angles-down"></i>
       </div>
       <div className="act" style={!expand ? { display: "none" } : {}}>
         <div

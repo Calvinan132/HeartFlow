@@ -28,15 +28,18 @@ let Profile = () => {
       <div className="Profile-header">
         <div className="cover-img"></div>
         <div className="Profile-info">
-          <img className="Profile-avt" src={Profile?.image_url}></img>
-          <div className="name-totalFriends">
-            <h3 className="Profile-name">
-              {Profile?.lastname + " " + Profile?.firstname}
-            </h3>
-            <p className="totalFriends">
-              {Profile?.totalFriends + " Người bạn"}
-            </p>
+          <div className="Profile-avt-name">
+            <img className="Profile-avt" src={Profile?.image_url}></img>
+            <div className="name-totalFriends">
+              <h3 className="Profile-name">
+                {Profile?.lastname + " " + Profile?.firstname}
+              </h3>
+              <p className="totalFriends">
+                {Profile?.totalFriends + " Người bạn"}
+              </p>
+            </div>
           </div>
+          {/* <div></div> */}
         </div>
       </div>
     </div>

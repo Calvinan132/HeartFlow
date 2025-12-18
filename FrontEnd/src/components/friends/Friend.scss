@@ -7,7 +7,7 @@
   .Container-info {
     display: flex;
     align-items: center;
-
+    padding: 5px;
     .avt {
       height: 45px;
       width: 45px;
@@ -19,23 +19,39 @@
     .name {
       font-size: larger;
       font-weight: 500;
+      list-style: none;
+      color: black;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    i {
+      color: gray;
+      margin-left: auto;
     }
   }
 
   .act {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 5px;
     gap: 5px;
     .add-partner {
       padding: 5px 15px;
-      background-color: green;
+      background-color: pink;
+      color: white;
       border-radius: 15px;
+      font-size: smaller;
+      font-weight: 500;
     }
     .unfriend {
       padding: 5px 10px;
       background-color: red;
       border-radius: 15px;
+      font-size: smaller;
+      font-weight: 500;
     }
   }
 }

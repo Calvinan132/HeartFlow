@@ -5,7 +5,6 @@ let Card = ({ products }) => {
     <>
       {products.map((item) => {
         return (
-          // 1. Sửa key: Dùng item.id (hoặc id duy nhất) thay vì index
           <div className="col-6 col-lg-3" key={item.id}>
             <Link
               to={`/product/${item.id}`}
